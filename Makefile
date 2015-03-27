@@ -6,7 +6,7 @@
 #    By: mgras <mgras@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/02/26 15:24:20 by mgras             #+#    #+#              #
-#    Updated: 2015/03/25 17:11:05 by mgras            ###   ########.fr        #
+#    Updated: 2015/03/27 09:46:01 by mgras            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ INC_PATH = ./include/
 
 INC = $(addprefix -I, $(INC_PATH))
 
-NAME = ft_minishell1
+NAME = ft_minishell2
 
 CC = gcc
 
