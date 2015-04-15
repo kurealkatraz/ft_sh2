@@ -5,28 +5,26 @@
 #                                                     +:+ +:+         +:+      #
 #    By: mgras <mgras@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2015/02/26 15:24:20 by mgras             #+#    #+#              #
-#    Updated: 2015/03/27 09:46:01 by mgras            ###   ########.fr        #
+#    Created: 2015/03/31 15:31:03 by mgras             #+#    #+#              #
+#    Updated: 2015/04/08 15:25:32 by mgras            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_PATH = ./src/
 
-SRC_NAME =	ft_builtin_env.c \
-			ft_0_free.c \
-			ft_builtin_utility.c \
-			ft_env.c \
-			ft_core.c \
-			ft_get_next_line.c \
-			ft_builtin_fnc.c \
-			ft_error.c \
-			ft_new_process.c \
-			ft_check_argv.c \
-			ft_buildtin_gmb.c \
-			ft_color.c \
+SRC_NAME =	ft_chldabs.c \
 			ft_cleaner.c \
-			ft_env_care.c \
-			ft_vorpalblade_snickersnack.c
+			ft_color.c \
+			ft_core.c \
+			ft_env.c \
+			ft_get_next_line.c \
+			ft_lexseur.c \
+			ft_lex_mcr.c \
+			ft_correction_center.c \
+			ft_scan_error.c \
+			ft_iswhat.c \
+			ft_path_maker.c \
+			ft_prex.c \
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 

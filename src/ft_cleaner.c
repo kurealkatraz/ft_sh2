@@ -6,35 +6,11 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 19:01:03 by mgras             #+#    #+#             */
-/*   Updated: 2015/03/25 16:46:38 by tlebrize         ###   ########.fr       */
+/*   Updated: 2015/04/05 14:16:45 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_minishell.h"
-
-void	ft_free_pth(t_pth *pth)
-{
-	t_pth	*save;
-
-	while (pth != NULL)
-	{
-		save = pth;
-		pth = pth->next;
-		free(save->path);
-		free(save);
-	}
-	save = NULL;
-	pth = NULL;
-}
-
-char	*ft_clear_pth(t_pth *save, t_pth *curr)
-{
-	char	*dubs;
-
-	dubs = ft_strdup(curr->path);
-	ft_free_pth(save);
-	return (dubs);
-}
+#include "shell.h"
 
 int		ft_clean_len(char *dirty_pleb)
 {
@@ -47,7 +23,25 @@ int		ft_clean_len(char *dirty_pleb)
 		dirty_pleb++;
 	while (dirty_pleb[swipe])
 	{
-		if (dirty_pleb[swipe] == ' ' || dirty_pleb[swipe] == '\t')
+		if (dirty_pleb[swipe] == '"')
+		{
+			swipe++;
+			while (dirty_pleb[swipe] != '"' && dirty_pleb[swipe])
+			{
+				swipe++;
+				len++;
+			}
+		}
+		else if (dirty_pleb[swipe == '\''])
+		{
+			swipe++;
+			while (dirty_pleb[swipe] != '\'' && dirty_pleb[swipe])
+			{
+				swipe++;
+				len++;
+			}
+		}
+		else if (dirty_pleb[swipe] == ' ' || dirty_pleb[swipe] == '\t')
 		{
 			while ((dirty_pleb[swipe] == ' ' || dirty_pleb[swipe]
 						== '\t') && dirty_pleb[swipe] != '\0')
@@ -78,7 +72,21 @@ char	*ft_clean_str(char *dirty_pleb)
 	ft_bzero(clean_pleb, ft_clean_len(dirty_pleb) + 1);
 	while (dirty_pleb[ts] != '\0')
 	{
-		if (dirty_pleb[ts] == ' ' || dirty_pleb[ts] == '\t')
+		if (dirty_pleb[ts] == '"')
+		{
+			clean_pleb[ss++] = dirty_pleb[ts++];
+			while (dirty_pleb[ts] != '"' && dirty_pleb[ts])
+				clean_pleb[ss++] = dirty_pleb[ts++];
+			clean_pleb[ss++] = dirty_pleb[ts++];
+		}
+		else if (dirty_pleb[ts] == '\'')
+		{
+			clean_pleb[ss++] = dirty_pleb[ts++];
+			while (dirty_pleb[ts] != '\'' && dirty_pleb[ts])
+				clean_pleb[ss++] = dirty_pleb[ts++];
+			clean_pleb[ss++] = dirty_pleb[ts++];
+		}
+		else if (dirty_pleb[ts] == ' ' || dirty_pleb[ts] == '\t')
 		{
 			while ((dirty_pleb[ts] == ' ' || dirty_pleb[ts] ==
 						'\t') && dirty_pleb[ts] != '\0')
@@ -89,6 +97,7 @@ char	*ft_clean_str(char *dirty_pleb)
 		else
 			clean_pleb[ss++] = dirty_pleb[ts++];
 	}
+	clean_pleb[ss++] = '\0';
 	free(dirty_pleb);
 	return (clean_pleb);
 }

@@ -5,41 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/26 15:46:15 by mgras             #+#    #+#             */
-/*   Updated: 2015/03/25 17:04:16 by mgras            ###   ########.fr       */
+/*   Created: 2015/03/31 17:50:49 by mgras             #+#    #+#             */
+/*   Updated: 2015/03/31 17:51:11 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_minishell.h"
-
-char	**ft_get_envp(t_env *env)
-{
-	char	**envp;
-	t_env	*swap;
-	int		i;
-	int		len;
-
-	swap = env;
-	i = 0;
-	while ((swap = swap->next) != NULL)
-		i++;
-	envp = (char**)malloc(sizeof(char*) * (i + 1));
-	envp[i + 1] = NULL;
-	swap = env;
-	i = 0;
-	while (swap != NULL)
-	{
-		len = ft_strlen(swap->value) + ft_strlen(swap->name) + 2;
-		envp[i] = (char*)malloc(sizeof(char) * len);
-		envp[i] = ft_strcpy(envp[i], swap->name);
-		envp[i] = ft_strcat(envp[i], "=");
-		envp[i] = ft_strcat(envp[i], swap->value);
-		i++;
-		envp[i] = NULL;
-		swap = swap->next;
-	}
-	return (envp);
-}
+#include "shell.h"
 
 t_env	*ft_new_env(t_env *env, char *full)
 {

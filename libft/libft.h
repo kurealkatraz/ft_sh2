@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/04 18:22:34 by mgras             #+#    #+#             */
-/*   Updated: 2015/03/12 11:34:24 by mgras            ###   ########.fr       */
+/*   Updated: 2015/04/02 15:25:14 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,10 @@ void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+
+/*
+**	PERSONAL TOUCH
+*/
+char				*ft_strndup(const char *s1, size_t size);
 
 #endif

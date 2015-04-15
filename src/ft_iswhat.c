@@ -1,41 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vorpalblade_snickersnack.c                      :+:      :+:    :+:   */
+/*   ft_iswhat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/24 18:36:49 by mgras             #+#    #+#             */
-/*   Updated: 2015/03/25 17:15:01 by mgras            ###   ########.fr       */
+/*   Created: 2015/04/04 16:04:36 by mgras             #+#    #+#             */
+/*   Updated: 2015/04/12 17:26:51 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_minishell.h"
+#include "shell.h"
 
-int		ft_bentobox_sushisnatch(char **argv, char *cmp, int pos)
+int		ft_ispath(char *str)
 {
-	int		cmplen;
+	int		ts;
 
-	cmplen = 0;
-	while (cmp[cmplen] != '=')
-		cmplen++;
-	while (argv[pos] != NULL)
-	{
-		if (ft_strncmp(cmp, argv[pos++], cmplen) == 0)
+	ts = 0;
+	while (str[ts])
+		if (str[ts++] == '/')
 			return (1);
-	}
 	return (0);
 }
 
-void	ft_bellatrix_cuddlecunt(char **argv)
+int		ft_isredi(char c)
 {
-	int		pos;
+	if (c == '>' || c == '<')
+		return (1);
+	return (0);
+}
 
-	pos = 2;
-	while (argv[pos] != NULL)
-	{
-		if (ft_bentobox_sushisnatch(argv, argv[pos], pos + 1) == 0)
-			ft_putendl(argv[pos]);
-		pos++;
-	}
+int		ft_isalien(char c)
+{
+	if (c == '"' || c == '\'' || c == ' ' || c == '>' || c == '<' || c == '|')
+		return (1);
+	return (0);
+}
+
+int		ft_iscompl(char c)
+{
+	if (c == '>' || c == '<' || c == '|')
+		return (1);
+	return (0);
 }

@@ -6,11 +6,11 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/12 16:42:56 by mgras             #+#    #+#             */
-/*   Updated: 2015/03/13 15:20:54 by mgras            ###   ########.fr       */
+/*   Updated: 2015/04/02 15:26:24 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_minishell.h"
+#include "shell.h"
 
 char	*ft_fill_holder(int fd)
 {

@@ -5,31 +5,18 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/27 15:46:17 by mgras             #+#    #+#             */
-/*   Updated: 2015/03/25 17:10:21 by mgras            ###   ########.fr       */
+/*   Created: 2015/03/31 17:44:58 by mgras             #+#    #+#             */
+/*   Updated: 2015/04/07 18:19:44 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_minishell.h"
+#include "shell.h"
 
 t_env	*ft_core(char *line, t_env *env)
 {
-	char	**argv;
-	char	*path;
-
 	line = ft_clean_str(line);
-	argv = ft_strsplit(line, ' ');
-	if (1 == ft_is_builtin(argv[0]))
-		env = ft_builtin(argv, env);
-	else
-	{
-		if ((path = ft_find_bin(argv[0], env)) == NULL)
-			ft_putstr("Command not found\n");
-		else
-			ft_new_process(path, argv, env);
-	}
+	ft_child_molesting(line, env);
 	free(line);
-	ft_free_argv(argv);
 	return (env);
 }
 
@@ -49,7 +36,7 @@ void	ft_prompt(char **envp, t_env *env)
 		else
 			exit(-1);
 	}
-	env = ft_free_all_env(env);
+	//env = ft_free_all_env(env);
 	(void)envp;
 }
 
@@ -76,7 +63,7 @@ int		main(int argc, char **argv, char **envp)
 	env = ft_get_env(NULL, envp);
 	env = shlvl_pp(env);
 	ft_prompt(envp, env);
-	argv = argv + 1;
-	argc = argc + 1;
+	argv = argv + 0;
+	argc = argc + 0;
 	return (0);
 }

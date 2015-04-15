@@ -6,11 +6,11 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 16:48:29 by mgras             #+#    #+#             */
-/*   Updated: 2015/03/25 17:14:42 by mgras            ###   ########.fr       */
+/*   Updated: 2015/04/02 15:22:47 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_minishell.h"
+#include "shell.h"
 
 char	*ft_getend(char *dst, char *src, int j)
 {
