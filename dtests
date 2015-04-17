@@ -1,0 +1,28 @@
+]2;mgras@e2r8p10: ~/Desktop/ft_sh2]1;..esktop/ft_sh2[?1h=[?1l>]2;ls -G -l]1;lstotal 408
+-rw-r--r--    1 mgras  2014_paris    2012 Apr 15 17:01 Makefile
+-rw-r--r--    1 mgras  2014_paris      90 Apr 17 19:05 dtests
+-rwxr-xr-x    1 mgras  2014_paris   40764 Apr 17 18:50 ft_minishell2
+drwxr-xr-x    5 mgras  2014_paris     170 Apr 17 17:44 include
+drwxr-xr-x  123 mgras  2014_paris    4182 Apr 17 18:50 libft
+-rw-r--r--    1 mgras  2014_paris  156232 Apr 17 18:50 libft.a
+drwxr-xr-x   15 mgras  2014_paris     510 Apr 17 18:50 obj
+drwxr-xr-x   15 mgras  2014_paris     510 Apr 17 18:51 src
+]2;mgras@e2r8p10: ~/Desktop/ft_sh2]1;..esktop/ft_sh2[?1h=[?1l>]2;cat -e ls -l]1;cat]2;mgras@e2r8p10: ~/Desktop/ft_sh2]1;..esktop/ft_sh2[?1h=[?1l>]2;ls -G -lh]1;lltotal 408
+-rw-r--r--    1 mgras  2014_paris   2.0K Apr 15 17:01 Makefile
+-rw-r--r--    1 mgras  2014_paris   786B Apr 17 19:05 dtests
+-rwxr-xr-x    1 mgras  2014_paris    40K Apr 17 18:50 ft_minishell2
+drwxr-xr-x    5 mgras  2014_paris   170B Apr 17 17:44 include
+drwxr-xr-x  123 mgras  2014_paris   4.1K Apr 17 18:50 libft
+-rw-r--r--    1 mgras  2014_paris   153K Apr 17 18:50 libft.a
+drwxr-xr-x   15 mgras  2014_paris   510B Apr 17 18:50 obj
+drwxr-xr-x   15 mgras  2014_paris   510B Apr 17 18:51 src
+]2;mgras@e2r8p10: ~/Desktop/ft_sh2]1;..esktop/ft_sh2[?1h=[?1l>]2;ls -G -lh]1;lltotal 408
+-rw-r--r--    1 mgras  2014_paris   2.0K Apr 15 17:01 Makefile
+-rw-r--r--    1 mgras  2014_paris   1.3K Apr 17 19:05 dtests
+-rwxr-xr-x    1 mgras  2014_paris    40K Apr 17 18:50 ft_minishell2
+drwxr-xr-x    5 mgras  2014_paris   170B Apr 17 17:44 include
+drwxr-xr-x  123 mgras  2014_paris   4.1K Apr 17 18:50 libft
+-rw-r--r--    1 mgras  2014_paris   153K Apr 17 18:50 libft.a
+drwxr-xr-x   15 mgras  2014_paris   510B Apr 17 18:50 obj
+drwxr-xr-x   15 mgras  2014_paris   510B Apr 17 18:51 src
+]2;mgras@e2r8p10: ~/Desktop/ft_sh2]1;..esktop/ft_sh2[?1h=[?1l>]2;exit]1;exit

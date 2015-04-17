@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/31 18:05:14 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/07 18:48:25 by mgras            ###   ########.fr       */
+/*   Updated: 2015/04/17 18:23:30 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,28 @@ t_lex	*ft_asign_path(t_pth *pth, t_lex *med)
 	return (med);
 }
 
-void	ft_child_molesting(char *line, t_env *env)
+int		ft_isbuilt(t_lex *med, t_env *env)
+{
+	if (ft_strcmp(med->mem, "env") == 0)
+	{
+		//ft_env(med, env);
+		return (0);
+	}
+	else if (ft_strcmp(med->mem, "setenv") == 0)
+	{
+		//ft_setenv(med, env);
+		return (0);
+	}
+	else if (ft_strcmp(med->mem, "unsetenv") == 0)
+	{
+		//ft_unsetenv(med, env);
+		return (0);
+	}
+	env = env + 0;
+	return (1);
+}
+
+int		ft_child_molesting(char *line, t_env *env)
 {
 	t_lex	*med;
 	t_pth	*pth;
@@ -68,17 +89,22 @@ void	ft_child_molesting(char *line, t_env *env)
 	pth = NULL;
 	med = ft_lexor(line);
 	med = ft_rev_lex(med);
+	if (ft_strcmp(med->mem, "exit") == 0)
+		return (1);
+	if (ft_isbuilt(med, env) == 0)
+		return (0);
 	med = ft_correction_facility(med);
 	if (med == NULL)
-		return ;
+		return (0);
 	pth = ft_get_pth(pth, env);
 	if (pth == NULL)
 	{
 		med = ft_free_lex(med);
-		return ;
+		return (0);
 	}
 	med = ft_asign_path(pth, med);
 	ft_muzukashi(med, env);
 	ft_free_pth(pth);
 	med = ft_free_lex(med);
+	return (0);
 }

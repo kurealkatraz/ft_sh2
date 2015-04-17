@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:29:11 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/12 17:27:06 by mgras            ###   ########.fr       */
+/*   Updated: 2015/04/17 17:44:48 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_lex	*ft_lexor(char *line);
 /*
 **	ft_chldabs
 */
-void	ft_child_molesting(char *line, t_env *env);
+int		ft_child_molesting(char *line, t_env *env);
 
 /*
 **	ft_lex_mcr.c

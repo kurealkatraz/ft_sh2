@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/03 14:25:30 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/13 20:17:50 by mgras            ###   ########.fr       */
+/*   Updated: 2015/04/17 17:36:57 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_scann_eror(int err_index, char *erro)
 		ft_putendl("ERROR : I don't know how the fuck you managed to get the program so deeply fucked but congrats you did it !");
 		ft_putendl("The error seems to be originated from this boy here");
 		ft_putstr(C_CYAN);
-		ft_putstr(erro);
+		ft_putendl(erro);
 		ft_putstr(C_RED);
 		ft_putendl("If you're asking yourself, all your base has been stopped");
 	}

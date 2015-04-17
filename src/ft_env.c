@@ -12,6 +12,25 @@
 
 #include "shell.h"
 
+t_env	*ft_env(t_lex *med, t_env *env)
+{
+	t_lex	*swp;
+
+	swp = med;
+	if (ft_strcmp(swp->next->mem, "-i") == 0)
+	{
+		ft_envi(med, env);
+		return (env);
+	}
+	if (ft_check_env(swp->next->mem) == 1)
+		ft_print_env_usr(env, med);
+	else if (ft_check_env(swp->next->mem) == 2)
+		ft_print_env(env);
+	else
+		ft_exec(ft_get_envp(env), ft_make_argv(med->next), ft_make_bin(med->next));
+	return (env);
+}
+
 t_env	*ft_new_env(t_env *env, char *full)
 {
 	t_env	*new;

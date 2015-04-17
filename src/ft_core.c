@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/31 17:44:58 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/07 18:19:44 by mgras            ###   ########.fr       */
+/*   Updated: 2015/04/17 17:46:35 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,17 @@
 
 t_env	*ft_core(char *line, t_env *env)
 {
+	int		out;
+
+	out = 0;
 	line = ft_clean_str(line);
-	ft_child_molesting(line, env);
+	out = ft_child_molesting(line, env);
 	free(line);
+	if (out == 1)
+	{
+		//ft_free_all_env
+		return (NULL);
+	}
 	return (env);
 }
 
@@ -24,7 +32,7 @@ void	ft_prompt(char **envp, t_env *env)
 {
 	char	*line;
 
-	while (42)
+	while (env != NULL)
 	{
 		line = NULL;
 		ft_colors(envp);

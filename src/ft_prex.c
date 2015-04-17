@@ -180,7 +180,7 @@ void	ft_delfile(char *filename)
 		execve("/bin/rm", argv, NULL);
 		kill(getpid(), SIGKILL);
 	}
-	wait(&sys);	
+	wait(&sys);
 }
 
 void	ft_right_s_redi(t_lex *med, t_env *env)
