@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/07 18:49:25 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/13 21:16:21 by mgras            ###   ########.fr       */
+/*   Updated: 2015/04/17 13:54:04 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	ft_exec(char **envp, char **argv, char *bin)
 		wait(&sys);
 }
 
-char	*ft_get_redi(t_lex *med)
+char	*ft_get_redi_dir(t_lex *med)
 {
 	t_lex	*swp;
 
@@ -121,6 +121,21 @@ char	*ft_get_redi(t_lex *med)
 		kill(getpid(), SIGKILL);
 	}
 	return (swp->next->mem);
+}
+
+char	*ft_get_redi(t_lex *med)
+{
+	t_lex	*swp;
+
+	swp = med;
+	while (!ft_isredi(swp->mem[0]) && swp)
+		swp = swp->next;
+	if (swp->next == NULL || swp == NULL)
+	{
+		ft_scann_eror(007, NULL);
+		kill(getpid(), SIGKILL);
+	}
+	return (swp->mem);
 }
 
 void	ft_mkfile(char *filename)
@@ -177,21 +192,21 @@ void	ft_right_s_redi(t_lex *med, t_env *env)
 	child = fork();
 	if (child == 0)
 	{
-		if ((fd = open(ft_get_redi(med), O_RDWR)) < 0)
+		if ((fd = open(ft_get_redi_dir(med), O_WRONLY)) < 0)
 		{
-			ft_mkfile(ft_get_redi(med));
-			if ((fd = open(ft_get_redi(med), O_RDWR)) < 0)
+			ft_mkfile(ft_get_redi_dir(med));
+			if ((fd = open(ft_get_redi_dir(med), O_WRONLY)) < 0)
 			{
-				ft_scann_eror(006, ft_get_redi(med));
+				ft_scann_eror(006, ft_get_redi_dir(med));
 				kill(getpid(), SIGKILL);
 			}
 		}
 		else
 		{
 			close (fd);
-			ft_delfile(ft_get_redi(med));
-			ft_mkfile(ft_get_redi(med));
-			fd = open(ft_get_redi(med), O_RDWR);
+			ft_delfile(ft_get_redi_dir(med));
+			ft_mkfile(ft_get_redi_dir(med));
+			fd = open(ft_get_redi_dir(med), O_RDWR);
 		}
 		dup2(fd, 1);
 		ft_exec(ft_get_envp(env), ft_make_argv(med), ft_make_bin(med));
@@ -201,6 +216,67 @@ void	ft_right_s_redi(t_lex *med, t_env *env)
 	wait(&sys);
 }
 
+void	ft_right_d_redi(t_lex *med, t_env *env)
+{
+	pid_t	child;
+	int		sys;
+	int		fd;
+
+	child = fork();
+	if (child == 0)
+	{
+		if ((fd = open(ft_get_redi_dir(med), O_WRONLY | O_APPEND)) < 0)
+		{
+			ft_mkfile(ft_get_redi_dir(med));
+			if ((fd = open(ft_get_redi_dir(med), O_WRONLY | O_APPEND)) < 0)
+			{
+				ft_scann_eror(006, ft_get_redi_dir(med));
+				kill(getpid(), SIGKILL);
+			}
+		}
+		dup2(fd, 1);
+		ft_exec(ft_get_envp(env), ft_make_argv(med), ft_make_bin(med));
+		close(fd);
+		kill(getpid(), SIGKILL);
+	}
+	wait(&sys);
+}
+
+int		ft_is_op_redi(t_lex *med)
+{
+	t_lex	*swp;
+
+	swp = med;
+	while (swp)
+	{
+		if (ft_isredi(swp->mem[0]))
+			return (1);
+		swp = swp->next;
+	}
+	return (0);
+}
+
+void	ft_parser(t_lex *med, t_env *env)
+{
+	t_lex	*swp;
+
+	swp = med;
+	while (swp != NULL)
+	{
+		if (ft_is_op_redi(swp))
+		{
+			if (ft_strcmp(">", ft_get_redi(swp)) == 0)
+				ft_right_s_redi(swp, env);
+			else if (ft_strcmp(">>", ft_get_redi(swp)) == 0)
+				ft_right_d_redi(swp, env);
+			else
+				return ;
+		}
+		else
+			ft_exec(ft_get_envp(env), ft_make_argv(swp), ft_make_bin(swp));
+	}
+}
+
 void	ft_muzukashi(t_lex *med, t_env *env)
 {
 	if (!ft_ispath(med->mem) && med->path == NULL)
@@ -208,6 +284,5 @@ void	ft_muzukashi(t_lex *med, t_env *env)
 		ft_scann_eror(005, med->mem);
 		return ;
 	}
-	ft_right_s_redi(med, env);
-	env = env + 0;
+	ft_parser(med, env);
 }
