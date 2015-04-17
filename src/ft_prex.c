@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/07 18:49:25 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/17 13:54:04 by mgras            ###   ########.fr       */
+/*   Updated: 2015/04/17 14:16:33 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,6 +256,28 @@ int		ft_is_op_redi(t_lex *med)
 	return (0);
 }
 
+t_lex	*ft_get_next_op(t_lex *med)
+{
+	t_lex	*swp;
+
+	if (med == NULL)
+		return (med);
+	swp = med;
+	{
+		while (!ft_iscompl(swp->mem[0]))
+		{
+			swp = swp->next;
+			if (swp == NULL)
+				return (swp);
+			else if (ft_iscompl(swp->mem[0]))
+				swp = ft_get_next_op(swp->next);
+			if (swp == NULL)
+				return (swp);
+		}
+	}
+	return (swp->next);
+}
+
 void	ft_parser(t_lex *med, t_env *env)
 {
 	t_lex	*swp;
@@ -274,6 +296,7 @@ void	ft_parser(t_lex *med, t_env *env)
 		}
 		else
 			ft_exec(ft_get_envp(env), ft_make_argv(swp), ft_make_bin(swp));
+		swp = ft_get_next_op(swp);
 	}
 }
 
