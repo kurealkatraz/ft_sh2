@@ -12,6 +12,20 @@
 
 #include "shell.h"
 
+int		ft_isenvmem(char *str)
+{
+	int		pos;
+
+	pos = 0;
+	while (str[pos])
+	{
+		if (str[pos] == '=')
+		return (1);
+		pos ++;
+	}
+	return (0);
+}
+
 int		ft_ispath(char *str)
 {
 	int		ts;

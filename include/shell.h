@@ -114,6 +114,7 @@ int		ft_iscompl(char c);
 int		ft_isalien(char c);
 int		ft_isredi(char c);
 int		ft_ispath(char *str);
+int		ft_isenvmem(char *str);
 
 /*
 **	ft_correction_center.c
