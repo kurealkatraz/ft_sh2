@@ -77,6 +77,17 @@ t_env	*shlvl_pp(t_env *env);
 /*
 **	ft_env.c
 */
+void	ft_print_env(t_env *env);
+t_env	*ft_make_usr_env(t_env *env, t_lex *med);
+t_env	*ft_free_one_env(t_env	*env);
+t_env	*ft_free_usr_env(t_env *env, t_lex *med);
+void	ft_print_env_usr(t_env *env, t_lex *med);
+int		ft_lex_env(t_lex *med);
+int		ft_env_noexec(t_lex *med);
+t_lex	*ft_del_lex_mem(t_lex *prev, t_lex *curr);
+void	ft_commit_env_changes(t_lex *med, int nb);
+int		ft_parse_env(t_lex *med);
+t_env	*ft_env(t_lex *med, t_env *env);
 t_env	*ft_new_env(t_env *env, char *full);
 t_env	*ft_get_env(t_env *env, char **envp);
 
