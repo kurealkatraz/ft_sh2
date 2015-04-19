@@ -100,8 +100,8 @@ int		ft_lex_env(t_lex *med)
 	pos = 0;
 	equal = 0;
 	mwp = med;
-	if (ft_is_buildtin(med->mem))
-		return (1);
+	if (ft_is_buildtin(med->mem) || med->path != NULL)
+		return (2);
 	while (med->mem[pos])
 	{
 		if (pos == 0 && mwp->mem[pos] == '=')
@@ -124,7 +124,7 @@ int		ft_env_noexec(t_lex *med)
 	mwp = med;
 	while (mwp != NULL && !ft_iscompl(mwp->mem[0]))
 	{
-		if (!ft_isenvmem(mwp->mem))
+		if (mwp->path != NULL)
 			return (0);
 		mwp = mwp->next;
 	}
@@ -173,17 +173,23 @@ int		ft_parse_env(t_lex *med)
 	t_lex	*mwp;
 	t_lex	*save;
 	int		change;
+	int		index;
 
 	change = 0;
+	index = 0;
 	mwp = med->next;
 	save = med;
 	while (mwp != NULL && !ft_iscompl(mwp->mem[0]))
 	{
-		if (ft_lex_env(mwp) == -1)
+		index = ft_lex_env(mwp);
+		if (index == -1 && mwp->path == NULL)
 		{
 			mwp = ft_del_lex_mem(save, mwp);
 			change++;
 		}
+		else if (index == 2)
+			while (mwp != NULL && !ft_iscompl(mwp->mem[0]))
+				mwp = mwp->next;
 		else
 		{
 			save = mwp;
@@ -194,11 +200,21 @@ int		ft_parse_env(t_lex *med)
 		ft_commit_env_changes(med, change);
 	if (med->next == NULL)
 		return (2);
-	else if (ft_env_noexec(mwp))
+	else if (ft_env_noexec(med))
 		return (1);
-	else if (!ft_env_noexec(mwp))
+	else if (!ft_env_noexec(med))
 		return (3);
 	return (0);
+}
+
+t_lex	*ft_get_exec(t_lex *med)
+{
+	t_lex	*mwp;
+
+	mwp = med;
+	while (mwp->path == NULL)
+		mwp = mwp->next;
+	return (mwp);
 }
 
 t_env	*ft_env(t_lex *med, t_env *env)
@@ -224,10 +240,10 @@ t_env	*ft_env(t_lex *med, t_env *env)
 	else if (pars == 3)
 	{
 		ewp = ft_make_usr_env(ewp, med);
-		ft_exec(ft_get_envp(ewp), ft_make_argv(med->next), ft_make_bin(med->next));
+		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));
 	}
 	else
-		ft_exec(ft_get_envp(env), ft_make_argv(med->next), ft_make_bin(med->next));
+		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));
 	return (env);
 }
 

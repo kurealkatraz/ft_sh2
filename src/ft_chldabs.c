@@ -50,7 +50,7 @@ t_lex	*ft_asign_path(t_pth *pth, t_lex *med)
 	mwp = med;
 	while (mwp != NULL)
 	{
-		if (!ft_ispath(mwp->mem) && !(ft_isalien(mwp->mem[0])))
+		if (!ft_ispath(mwp->mem) && !ft_isenvmem(mwp->mem) && !(ft_isalien(mwp->mem[0])))
 			mwp = ft_get_bin(mwp, pth);
 		else
 			mwp->path = NULL;
@@ -68,11 +68,6 @@ int		ft_child_molesting(char *line, t_env *env)
 	pth = NULL;
 	med = ft_lexor(line);
 	med = ft_rev_lex(med);
-	if (ft_strcmp(med->mem, "exit") == 0)
-		return (1);
-	med = ft_correction_facility(med);
-	if (med == NULL)
-		return (0);
 	pth = ft_get_pth(pth, env);
 	if (pth == NULL)
 	{
@@ -80,6 +75,11 @@ int		ft_child_molesting(char *line, t_env *env)
 		return (0);
 	}
 	med = ft_asign_path(pth, med);
+	if (ft_strcmp(med->mem, "exit") == 0)
+		return (1);
+	med = ft_correction_facility(med);
+	if (med == NULL)
+		return (0);
 	ft_muzukashi(med, env);
 	ft_free_pth(pth);
 	med = ft_free_lex(med);
