@@ -64,7 +64,16 @@ t_lex	*ft_correction_facility(t_lex *med)
 	swp = med;
 	while (swp != NULL)
 	{
-		if (!(swp = ft_scaner(swp)))
+		if (ft_is_buildtin(swp->mem))
+		{
+			while (!ft_iscompl(swp->mem[0]))
+			{
+				if (swp->next == NULL)
+					return (med);
+				swp = swp->next;
+			}
+		}
+		else if (!(swp = ft_scaner(swp)))
 		{
 			med = ft_free_lex(med);
 			return (NULL);

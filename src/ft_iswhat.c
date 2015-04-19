@@ -12,6 +12,19 @@
 
 #include "shell.h"
 
+int		ft_is_buildtin(char *str)
+{
+	if (ft_strcmp(str, "env") == 0)
+		return (1);
+	else if(ft_strcmp(str, "setenv") == 0)
+		return (1);
+	else if(ft_strcmp(str, "unsetenv") == 0)
+		return (1);
+	else if(ft_strcmp(str, "cd") == 0)
+		return (1);
+	return (0);
+}
+
 int		ft_isenvmem(char *str)
 {
 	int		pos;

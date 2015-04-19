@@ -31,7 +31,7 @@ t_env	*ft_make_usr_env(t_env *env, t_lex *med)
 	t_env	*ewp;
 	t_lex	*mwp;
 
-	mwp = med;
+	mwp = med->next;
 	ewp = env;
 	while (mwp != NULL && !ft_iscompl(mwp->mem[0]))
 	{
@@ -100,6 +100,8 @@ int		ft_lex_env(t_lex *med)
 	pos = 0;
 	equal = 0;
 	mwp = med;
+	if (ft_is_buildtin(med->mem))
+		return (1);
 	while (med->mem[pos])
 	{
 		if (pos == 0 && mwp->mem[pos] == '=')
@@ -108,6 +110,7 @@ int		ft_lex_env(t_lex *med)
 			return (-1);
 		if (mwp->mem[pos] == '=')
 			equal = 1;
+			pos++;
 	}
 	if (equal == 1)
 		return (1);
@@ -123,8 +126,9 @@ int		ft_env_noexec(t_lex *med)
 	{
 		if (!ft_isenvmem(mwp->mem))
 			return (0);
+		mwp = mwp->next;
 	}
-	return (0);
+	return (1);
 }
 
 t_lex	*ft_del_lex_mem(t_lex *prev, t_lex *curr)
@@ -132,16 +136,12 @@ t_lex	*ft_del_lex_mem(t_lex *prev, t_lex *curr)
 	if (prev == curr)
 	{
 		free(prev->mem);
-		if (prev->path)
-			free(prev->path);
 		curr = prev->next;
 		free(prev);
 		return (curr);
 	}
 	prev->next = curr->next;
 	free(curr->mem);
-	if (prev->path)
-		free(prev->path);
 	free(curr);
 	return (prev);
 }
@@ -152,7 +152,7 @@ void	ft_commit_env_changes(t_lex *med, int nb)
 
 	swp = med;
 	ft_putstr(C_RED);
-	ft_putstr("[WARNING]:");
+	ft_putstr("[WARNING]: ");
 	ft_putstr(C_CYAN);
 	ft_putnbr(nb);
 	ft_putendl(" unvalid entries have been found.");
@@ -164,6 +164,7 @@ void	ft_commit_env_changes(t_lex *med, int nb)
 		ft_putchar(' ');
 		swp = swp->next;
 	}
+	ft_putchar('\n');
 	ft_putstr(C_NONE);
 }
 
@@ -174,8 +175,8 @@ int		ft_parse_env(t_lex *med)
 	int		change;
 
 	change = 0;
-	mwp = med;
-	save = mwp;
+	mwp = med->next;
+	save = med;
 	while (mwp != NULL && !ft_iscompl(mwp->mem[0]))
 	{
 		if (ft_lex_env(mwp) == -1)
@@ -183,17 +184,21 @@ int		ft_parse_env(t_lex *med)
 			mwp = ft_del_lex_mem(save, mwp);
 			change++;
 		}
-		save = mwp;
-		mwp = mwp->next;
+		else
+		{
+			save = mwp;
+			mwp = mwp->next;
+		}
 	}
 	if (change > 0)
-		ft_commit_env_changes(mwp, change);
-	if (mwp == NULL)
+		ft_commit_env_changes(med, change);
+	if (med->next == NULL)
 		return (2);
 	else if (ft_env_noexec(mwp))
 		return (1);
 	else if (!ft_env_noexec(mwp))
 		return (3);
+	return (0);
 }
 
 t_env	*ft_env(t_lex *med, t_env *env)
@@ -205,12 +210,13 @@ t_env	*ft_env(t_lex *med, t_env *env)
 	swp = med;
 	ewp = env;
 	pars = 0;
-	if (ft_strcmp(swp->next->mem, "-i") == 0)
-	{
-		//ft_envi(med, env);
-		return (env);
-	}
-	pars = ft_parse_env(swp->next);
+	if (swp->next)
+		if (ft_strcmp(swp->next->mem, "-i") == 0)
+		{
+			//ft_envi(med, env);
+			return (env);
+		}
+	pars = ft_parse_env(swp);
 	if (pars == 1)
 		ft_print_env_usr(env, med);
 	else if (pars == 2)

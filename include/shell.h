@@ -45,6 +45,15 @@ typedef struct		s_pth
 }					t_pth;
 
 /*
+**	ft_prex.c
+*/
+char	*ft_make_bin(t_lex *med);
+char	**ft_get_envp(t_env *env);
+char	**ft_make_argv(t_lex *med);
+t_lex	*ft_next_op(t_lex *med);
+void	ft_exec(char **envp, char **argv, char *bin);
+
+/*
 **	ft_path_macker.c
 */
 char	*ft_split_path(char *value);
@@ -126,6 +135,7 @@ int		ft_isalien(char c);
 int		ft_isredi(char c);
 int		ft_ispath(char *str);
 int		ft_isenvmem(char *str);
+int		ft_is_buildtin(char *str);
 
 /*
 **	ft_correction_center.c

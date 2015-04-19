@@ -278,6 +278,19 @@ t_lex	*ft_get_next_op(t_lex *med)
 	return (swp->next);
 }
 
+t_env	*ft_what_buildtin(t_lex *med, t_env *env)
+{
+	if (ft_strcmp(med->mem, "env") == 0)
+		env = ft_env(med, env);
+	else if(ft_strcmp(med->mem, "setenv") == 0)
+		env = env + 0;
+	else if(ft_strcmp(med->mem, "unsetenv") == 0)
+		env = env + 0;
+	else if(ft_strcmp(med->mem, "cd") == 0)
+		env = env + 0;
+	return (env);
+}
+
 void	ft_parser(t_lex *med, t_env *env)
 {
 	t_lex	*swp;
@@ -294,6 +307,8 @@ void	ft_parser(t_lex *med, t_env *env)
 			else
 				return ;
 		}
+		else if (ft_is_buildtin(swp->mem))
+			env = ft_what_buildtin(swp, env);
 		else
 			ft_exec(ft_get_envp(env), ft_make_argv(swp), ft_make_bin(swp));
 		swp = ft_get_next_op(swp);
@@ -302,7 +317,7 @@ void	ft_parser(t_lex *med, t_env *env)
 
 void	ft_muzukashi(t_lex *med, t_env *env)
 {
-	if (!ft_ispath(med->mem) && med->path == NULL)
+	if (!ft_ispath(med->mem) && med->path == NULL && !ft_is_buildtin)
 	{
 		ft_scann_eror(005, med->mem);
 		return ;

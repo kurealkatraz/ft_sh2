@@ -59,27 +59,6 @@ t_lex	*ft_asign_path(t_pth *pth, t_lex *med)
 	return (med);
 }
 
-int		ft_isbuilt(t_lex *med, t_env *env)
-{
-	if (ft_strcmp(med->mem, "env") == 0)
-	{
-		//ft_env(med, env);
-		return (0);
-	}
-	else if (ft_strcmp(med->mem, "setenv") == 0)
-	{
-		//ft_setenv(med, env);
-		return (0);
-	}
-	else if (ft_strcmp(med->mem, "unsetenv") == 0)
-	{
-		//ft_unsetenv(med, env);
-		return (0);
-	}
-	env = env + 0;
-	return (1);
-}
-
 int		ft_child_molesting(char *line, t_env *env)
 {
 	t_lex	*med;
@@ -91,8 +70,6 @@ int		ft_child_molesting(char *line, t_env *env)
 	med = ft_rev_lex(med);
 	if (ft_strcmp(med->mem, "exit") == 0)
 		return (1);
-	if (ft_isbuilt(med, env) == 0)
-		return (0);
 	med = ft_correction_facility(med);
 	if (med == NULL)
 		return (0);
