@@ -23,6 +23,8 @@
 # include <limits.h>
 # include <time.h>
 # include <fcntl.h>
+//# include <sys/type.h>
+# include <sys/wait.h>
 
 typedef struct		s_env
 {

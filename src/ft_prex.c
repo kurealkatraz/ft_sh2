@@ -74,7 +74,7 @@ char	**ft_make_argv(t_lex *med)
 	{
 		argv[size] = (char*)malloc(sizeof(char) * ft_strlen(swp->mem) + 1);
 		argv[size] = ft_strcpy(argv[size], swp->mem);
-		size++;
+		argv[++size] = NULL;
 		swp = swp->next;
 	}
 	return (argv);
@@ -317,7 +317,7 @@ void	ft_parser(t_lex *med, t_env *env)
 
 void	ft_muzukashi(t_lex *med, t_env *env)
 {
-	if (!ft_ispath(med->mem) && med->path == NULL && !ft_is_buildtin)
+	if (!ft_ispath(med->mem) && med->path == NULL && !ft_is_buildtin(med->mem))
 	{
 		ft_scann_eror(005, med->mem);
 		return ;

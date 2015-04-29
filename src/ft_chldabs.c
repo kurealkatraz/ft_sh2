@@ -43,10 +43,8 @@ t_lex	*ft_get_bin(t_lex *med, t_pth *pth)
 
 t_lex	*ft_asign_path(t_pth *pth, t_lex *med)
 {
-	t_pth	*pwp;
 	t_lex	*mwp;
 
-	pwp = pth;
 	mwp = med;
 	while (mwp != NULL)
 	{

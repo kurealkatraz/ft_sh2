@@ -55,11 +55,11 @@ lib :
 	cp $(LIB_PATH)$(LIB_NAME) .
 
 $(NAME) : $(OBJ)
-	$(CC) $(CFLAGS) $(INC) -o $(NAME) $(LIB_NAME) $(OBJ) -g
+	$(CC) $(CFLAGS) $(INC) -o $(NAME) $(OBJ) $(LIB_NAME) -g
 
 $(OBJ_PATH)%.o : $(SRC_PATH)%.c
 	@mkdir $(OBJ_PATH) 2> /dev/null || echo "" > /dev/null
-	$(CC) $(CFLAGS) $(LIB) $(INC) -o $@ -c $< -g
+	$(CC) $(CFLAGS) $(INC) $(LIB) -o $@ -c $< -g
 
 clean :
 	make -C $(LIB_PATH) clean
