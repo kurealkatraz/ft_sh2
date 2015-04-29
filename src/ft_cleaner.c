@@ -75,14 +75,14 @@ char	*ft_clean_str(char *dirty_pleb)
 		if (dirty_pleb[ts] == '"')
 		{
 			clean_pleb[ss++] = dirty_pleb[ts++];
-			while (dirty_pleb[ts] != '"' && dirty_pleb[ts])
+			while (dirty_pleb[ts] != '"' && dirty_pleb[ts] != '\0')
 				clean_pleb[ss++] = dirty_pleb[ts++];
 			clean_pleb[ss++] = dirty_pleb[ts++];
 		}
 		else if (dirty_pleb[ts] == '\'')
 		{
 			clean_pleb[ss++] = dirty_pleb[ts++];
-			while (dirty_pleb[ts] != '\'' && dirty_pleb[ts])
+			while (dirty_pleb[ts] != '\'' && dirty_pleb[ts] != '\0')
 				clean_pleb[ss++] = dirty_pleb[ts++];
 			clean_pleb[ss++] = dirty_pleb[ts++];
 		}

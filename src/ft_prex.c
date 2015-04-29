@@ -33,6 +33,8 @@ char	**ft_get_envp(t_env *env)
 
 	swap = env;
 	i = 0;
+	if (swap == NULL)
+		return (NULL);
 	while ((swap = swap->next) != NULL)
 		i++;
 	envp = (char**)malloc(sizeof(char*) * (i + 1));
@@ -98,6 +100,7 @@ void	ft_exec(char **envp, char **argv, char *bin)
 	pid_t	child;
 	int		sys;
 
+	//if (ft_ispath(argv[0])
 	child = fork();
 	if (child == 0)
 	{
@@ -318,9 +321,7 @@ void	ft_parser(t_lex *med, t_env *env)
 void	ft_muzukashi(t_lex *med, t_env *env)
 {
 	if (!ft_ispath(med->mem) && med->path == NULL && !ft_is_buildtin(med->mem))
-	{
 		ft_scann_eror(005, med->mem);
-		return ;
-	}
-	ft_parser(med, env);
+	else
+		ft_parser(med, env);
 }

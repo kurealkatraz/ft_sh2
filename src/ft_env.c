@@ -155,7 +155,7 @@ void	ft_commit_env_changes(t_lex *med, int nb)
 	ft_putstr("[WARNING]: ");
 	ft_putstr(C_CYAN);
 	ft_putnbr(nb);
-	ft_putendl(" unvalid entries have been found.");
+	ft_putendl(" unvalid entr(ies)/(y) have been found.");
 	ft_putendl("This is how the command was corrected");
 	ft_putstr(C_MAGENTA);
 	while (swp != NULL && !ft_iscompl(swp->mem[0]))
@@ -217,6 +217,14 @@ t_lex	*ft_get_exec(t_lex *med)
 	return (mwp);
 }
 
+t_lex	*ft_free_single_lex(t_lex *med)
+{
+	free(med->next->mem);
+	med->next = med->next->next;
+	free(med->next);
+	return (med);
+}
+
 t_env	*ft_env(t_lex *med, t_env *env)
 {
 	t_lex	*swp;
@@ -229,7 +237,8 @@ t_env	*ft_env(t_lex *med, t_env *env)
 	if (swp->next)
 		if (ft_strcmp(swp->next->mem, "-i") == 0)
 		{
-			//ft_envi(med, env);
+			ft_free_single_lex(med);
+			ft_env(med, NULL);
 			return (env);
 		}
 	pars = ft_parse_env(swp);
@@ -240,10 +249,10 @@ t_env	*ft_env(t_lex *med, t_env *env)
 	else if (pars == 3)
 	{
 		ewp = ft_make_usr_env(ewp, med);
-		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));
+		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));	//must do path compability
 	}
 	else
-		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));
+		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));	//must do path compability
 	return (env);
 }
 
