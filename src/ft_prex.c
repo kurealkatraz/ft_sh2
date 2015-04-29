@@ -100,7 +100,6 @@ void	ft_exec(char **envp, char **argv, char *bin)
 	pid_t	child;
 	int		sys;
 
-	//if (ft_ispath(argv[0])
 	child = fork();
 	if (child == 0)
 	{
