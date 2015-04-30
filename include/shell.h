@@ -23,7 +23,6 @@
 # include <limits.h>
 # include <time.h>
 # include <fcntl.h>
-//# include <sys/type.h>
 # include <sys/wait.h>
 
 typedef struct		s_env
@@ -45,6 +44,15 @@ typedef struct		s_pth
 	char			*path;
 	struct s_pth	*next;
 }					t_pth;
+
+/*
+**	ft_setenv.c
+*/
+void	ft_usrenv_error(char *err, int mol);
+int		ft_comp_env_str(t_env *env, char *str);
+t_lex	*ft_exist_env(t_env *env, t_lex *med);
+t_lex	*ft_check_usenv(t_lex *med, t_env *env);
+t_env   *ft_setenv(t_lex *med, t_env *env);
 
 /*
 **	ft_prex.c
@@ -101,6 +109,7 @@ int		ft_parse_env(t_lex *med);
 t_env	*ft_env(t_lex *med, t_env *env);
 t_env	*ft_new_env(t_env *env, char *full);
 t_env	*ft_get_env(t_env *env, char **envp);
+t_lex	*ft_free_single_lex(t_lex *med);
 
 /*
 **	get_next_line.c

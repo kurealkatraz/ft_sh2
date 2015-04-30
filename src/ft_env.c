@@ -100,6 +100,8 @@ int		ft_lex_env(t_lex *med)
 	pos = 0;
 	equal = 0;
 	mwp = med;
+	if (med == NULL)
+		return (1);
 	if (ft_is_buildtin(med->mem) || med->path != NULL)
 		return (2);
 	while (med->mem[pos])
@@ -262,6 +264,9 @@ t_env	*ft_new_env(t_env *env, char *full)
 	size_t	size;
 
 	size = 0;
+	new = NULL;
+	if (full == NULL)
+		return (env);
 	while (full[size] != '\0' && full[size] != '=')
 		size++;
 	new = (t_env*)malloc(sizeof(t_env));

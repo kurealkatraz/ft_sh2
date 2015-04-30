@@ -285,7 +285,7 @@ t_env	*ft_what_buildtin(t_lex *med, t_env *env)
 	if (ft_strcmp(med->mem, "env") == 0)
 		env = ft_env(med, env);
 	else if(ft_strcmp(med->mem, "setenv") == 0)
-		env = env + 0;
+		ft_setenv(med, env);
 	else if(ft_strcmp(med->mem, "unsetenv") == 0)
 		env = env + 0;
 	else if(ft_strcmp(med->mem, "cd") == 0)
