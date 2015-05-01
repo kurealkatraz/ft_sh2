@@ -45,7 +45,6 @@ void	ft_prompt(char **envp, t_env *env)
 			exit(-1);
 	}
 	//env = ft_free_all_env(env);
-	(void)envp;
 }
 
 t_env	*shlvl_pp(t_env *env)
@@ -68,8 +67,13 @@ int		main(int argc, char **argv, char **envp)
 {
 	t_env	*env;
 
-	env = ft_get_env(NULL, envp);
-	env = shlvl_pp(env);
+	if (envp != NULL)
+	{
+		env = ft_get_env(NULL, envp);
+		env = shlvl_pp(env);
+	}
+	else
+		env = NULL;
 	ft_prompt(envp, env);
 	argv = argv + 0;
 	argc = argc + 0;

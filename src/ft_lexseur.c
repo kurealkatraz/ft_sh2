@@ -128,5 +128,6 @@ t_lex	*ft_lexor(char *line)
 		return (med);
 	while (line[*markpos])
 		med = ft_next_lex(med, markpos, line + (*markpos));
+	free(markpos);
 	return (med);
 }

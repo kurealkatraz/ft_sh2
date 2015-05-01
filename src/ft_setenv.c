@@ -38,16 +38,17 @@ void	ft_usrenv_error(char *err, int mol)
 
 int		ft_comp_env_str(t_env *env, char *str)
 {
+	t_env	*swp;
 	char	*snv;
 	int		ret;
 
 	ret = 0;
+	swp = env;
 	snv = NULL;
-	snv = ft_strjoin(ft_strjoin(env->name, "="), env->value);
+	snv = ft_strjoin(ft_strjoin(swp->name, "="), swp->value);
 	if (ft_strcmp(snv, str) == 0)
 		ret = 1;
-	if (str != NULL)
-		free(str);
+	free(snv);
 	return (ret);
 }
 
@@ -58,7 +59,8 @@ t_lex	*ft_exist_env(t_env *env, t_lex *med)
 	t_lex	*save;
 
 	save = med;
-	while (medivac != NULL)
+	medivac = save->next;
+	while (medivac != NULL && save != NULL)
 	{
 		medivac = save->next;
 		swipe = env;
@@ -68,7 +70,10 @@ t_lex	*ft_exist_env(t_env *env, t_lex *med)
 			{
 				ft_usrenv_error(medivac->mem, 002);
 				ft_free_single_lex(save);
+				swipe = NULL;
 			}
+			if (swipe)
+				swipe = swipe->next;
 		}
 		save = save->next;
 	}
@@ -94,11 +99,31 @@ t_lex	*ft_check_usenv(t_lex *med, t_env *env)
     }
 	med = ft_exist_env(env, med);
 	if (med->next == NULL)
-	{
 		ft_usrenv_error(NULL, 001);
-		return (NULL);
-	}
-	return (med);
+	return (med->next);
+}
+
+void	ft_put_at_end_env(t_env *env, char *full)
+{
+	t_env	*new;
+	t_env	*swp;
+	size_t	size;
+
+	size = 0;
+	swp = env;
+	new = NULL;
+	if (full == NULL || env == NULL)
+		return ;
+	while (full[size] != '\0' && full[size] != '=')
+		size++;
+	new = (t_env*)malloc(sizeof(t_env));
+	new->next = NULL;
+	new->name = (char*)malloc(sizeof(char) * (size + 1));
+	new->name = ft_strncpy(new->name, full, size);
+	new->value = ft_strsub(full, size + 1, (ft_strlen(full) - size));
+	while (swp->next != NULL)
+		swp = swp->next;
+	swp->next = new;
 }
 
 t_env   *ft_setenv(t_lex *med, t_env *env)
@@ -109,7 +134,7 @@ t_env   *ft_setenv(t_lex *med, t_env *env)
 	swp = ft_check_usenv(med, env);
 	while(swp != NULL)
 	{
-		env = ft_new_env(env, swp->mem);
+		ft_put_at_end_env(env, swp->mem);
 		swp = swp->next;
 	}
     return (env);

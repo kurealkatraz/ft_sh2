@@ -78,7 +78,7 @@ int		ft_child_molesting(char *line, t_env *env)
 	med = ft_correction_facility(med);
 	if (med == NULL)
 		return (0);
-	ft_muzukashi(med, env);
+	env = ft_muzukashi(med, env);
 	ft_free_pth(pth);
 	med = ft_free_lex(med);
 	return (0);

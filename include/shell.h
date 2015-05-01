@@ -62,6 +62,8 @@ char	**ft_get_envp(t_env *env);
 char	**ft_make_argv(t_lex *med);
 t_lex	*ft_next_op(t_lex *med);
 void	ft_exec(char **envp, char **argv, char *bin);
+t_env	*ft_parser(t_lex *med, t_env *env);
+t_env	*ft_muzukashi(t_lex *med, t_env *env);
 
 /*
 **	ft_path_macker.c
@@ -160,10 +162,5 @@ t_lex	*ft_correction_facility(t_lex *med);
 **	ft_scan_error.c
 */
 void	ft_scann_eror(int err_index, char *erro);
-
-/*
-**	ft_prex.c
-*/
-void	ft_muzukashi(t_lex *med, t_env *env);
 
 #endif
