@@ -100,21 +100,22 @@ int		ft_lex_env(t_lex *med)
 	pos = 0;
 	equal = 0;
 	mwp = med;
-	if (med == NULL)
+	if (mwp == NULL)
 		return (1);
-	if (ft_is_buildtin(med->mem) || med->path != NULL)
+	if (ft_is_buildtin(mwp->mem) || mwp->path != NULL)
 		return (2);
-	while (med->mem[pos])
+	while (mwp->mem[pos])
 	{
 		if (pos == 0 && mwp->mem[pos] == '=')
 			return (-1);
-		else if (mwp->mem[pos] == '=' && med->mem[pos + 1] == '\0')
-			return (-1);
 		if (mwp->mem[pos] == '=')
-			equal = 1;
-			pos++;
+			equal++;
+		pos++;
 	}
 	if (equal == 1)
+		if (ft_is_dubs(mwp))
+			return (-1);
+	if (equal == 1 && med->mem[pos - 1] != '=')
 		return (1);
 	return (-1);
 }
@@ -126,7 +127,7 @@ int		ft_env_noexec(t_lex *med)
 	mwp = med;
 	while (mwp != NULL && !ft_iscompl(mwp->mem[0]))
 	{
-		if (mwp->path != NULL)
+		if (mwp->path != NULL && !ft_is_buildtin(mwp->mem))
 			return (0);
 		mwp = mwp->next;
 	}
@@ -187,6 +188,8 @@ int		ft_parse_env(t_lex *med)
 		if (index == -1 && mwp->path == NULL)
 		{
 			mwp = ft_del_lex_mem(save, mwp);
+			if (mwp == med)
+				mwp = med->next;
 			change++;
 		}
 		else if (index == 2)
@@ -219,14 +222,6 @@ t_lex	*ft_get_exec(t_lex *med)
 	return (mwp);
 }
 
-t_lex	*ft_free_single_lex(t_lex *med)
-{
-	free(med->next->mem);
-	med->next = med->next->next;
-	free(med->next);
-	return (med);
-}
-
 t_env	*ft_env(t_lex *med, t_env *env)
 {
 	t_lex	*swp;
@@ -239,7 +234,7 @@ t_env	*ft_env(t_lex *med, t_env *env)
 	if (swp->next)
 		if (ft_strcmp(swp->next->mem, "-i") == 0)
 		{
-			ft_free_single_lex(med);
+			ft_del_lex_mem(med, med->next);
 			ft_env(med, NULL);
 			return (env);
 		}

@@ -40,44 +40,19 @@ int		ft_comp_env_str(t_env *env, char *str)
 {
 	t_env	*swp;
 	char	*snv;
+	char	*snn;
 	int		ret;
 
 	ret = 0;
 	swp = env;
 	snv = NULL;
-	snv = ft_strjoin(ft_strjoin(swp->name, "="), swp->value);
+	snn = ft_strjoin(swp->name, "=");
+	snv = ft_strjoin(snn, swp->value);
 	if (ft_strcmp(snv, str) == 0)
 		ret = 1;
 	free(snv);
+	free(snn);
 	return (ret);
-}
-
-t_lex	*ft_exist_env(t_env *env, t_lex *med)
-{
-	t_env	*swipe;
-	t_lex	*medivac;
-	t_lex	*save;
-
-	save = med;
-	medivac = save->next;
-	while (medivac != NULL && save != NULL)
-	{
-		medivac = save->next;
-		swipe = env;
-		while (swipe != NULL && medivac != NULL)
-		{
-			if (!ft_comp_env_str(swipe, medivac->mem))
-			{
-				ft_usrenv_error(medivac->mem, 002);
-				ft_free_single_lex(save);
-				swipe = NULL;
-			}
-			if (swipe)
-				swipe = swipe->next;
-		}
-		save = save->next;
-	}
-	return (med);
 }
 
 t_lex	*ft_check_usenv(t_lex *med, t_env *env)
@@ -92,12 +67,16 @@ t_lex	*ft_check_usenv(t_lex *med, t_env *env)
     	if (ft_lex_env(swp) == -1)
     	{
         	ft_usrenv_error(swp->mem, 000);
-			save = ft_free_single_lex(save);
+			save = ft_del_lex_mem(save, save->next);
     	}
+		else if (ft_is_env_dubs(env, med))
+		{
+			ft_usrenv_error(swp->mem, 002);
+			save = ft_del_lex_mem(save, save->next);
+		}
         else
             save = save->next;
     }
-	med = ft_exist_env(env, med);
 	if (med->next == NULL)
 		ft_usrenv_error(NULL, 001);
 	return (med->next);

@@ -22,7 +22,7 @@ t_env	*ft_core(char *line, t_env *env)
 	free(line);
 	if (out == 1)
 	{
-		//ft_free_all_env
+		//env = ft_free_all_env(env);
 		return (NULL);
 	}
 	return (env);
@@ -44,7 +44,6 @@ void	ft_prompt(char **envp, t_env *env)
 		else
 			exit(-1);
 	}
-	//env = ft_free_all_env(env);
 }
 
 t_env	*shlvl_pp(t_env *env)

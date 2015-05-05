@@ -12,6 +12,40 @@
 
 #include "shell.h"
 
+int		ft_is_env_dubs(t_env *env, t_lex *med)
+{
+	t_env	*ewp;
+	char	*str;
+
+	ewp = env;
+	str = ft_strcdup(med->mem, '=');
+	while (ewp != NULL)
+	{
+		if (ft_strcmp(str, env->name) == 0)
+			return (1);
+		ewp = ewp->next;
+	}
+	return (0);
+}
+
+int		ft_is_dubs(t_lex *med)
+{
+	t_lex	*swp;
+	int		e_size;
+
+	e_size = 0;
+	while (med->mem[e_size] != '=')
+		e_size++;
+	swp = med->next;
+	while (swp != NULL)
+	{
+		if (ft_strncmp(swp->mem, med->mem, e_size) == 0)
+			return (1);
+		swp = swp->next;
+	}
+	return (0);
+}
+
 int		ft_is_buildtin(char *str)
 {
 	if (ft_strcmp(str, "env") == 0)

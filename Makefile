@@ -26,6 +26,7 @@ SRC_NAME =	ft_chldabs.c \
 			ft_path_maker.c \
 			ft_prex.c \
 			ft_setenv.c \
+			ft_unsetenv.c \
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 

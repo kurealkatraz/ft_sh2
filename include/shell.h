@@ -149,6 +149,8 @@ int		ft_isredi(char c);
 int		ft_ispath(char *str);
 int		ft_isenvmem(char *str);
 int		ft_is_buildtin(char *str);
+int		ft_is_dubs(t_lex *med);
+int		ft_is_env_dubs(t_env *env, t_lex *med);
 
 /*
 **	ft_correction_center.c
@@ -162,5 +164,10 @@ t_lex	*ft_correction_facility(t_lex *med);
 **	ft_scan_error.c
 */
 void	ft_scann_eror(int err_index, char *erro);
+
+/*
+**	ft_unsetenv.c
+*/
+char	*ft_strcdup(char *str, char c);
 
 #endif
