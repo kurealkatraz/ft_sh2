@@ -69,7 +69,7 @@ t_lex	*ft_check_usenv(t_lex *med, t_env *env)
         	ft_usrenv_error(swp->mem, 000);
 			save = ft_del_lex_mem(save, save->next);
     	}
-		else if (ft_is_env_dubs(env, med))
+		else if (ft_is_env_dubs(env, swp))
 		{
 			ft_usrenv_error(swp->mem, 002);
 			save = ft_del_lex_mem(save, save->next);

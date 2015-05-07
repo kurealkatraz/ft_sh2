@@ -16,15 +16,25 @@ int		ft_is_env_dubs(t_env *env, t_lex *med)
 {
 	t_env	*ewp;
 	char	*str;
+	int		len;
 
 	ewp = env;
-	str = ft_strcdup(med->mem, '=');
+	len = 0;
+	if (!med)
+		return (0);
+	while (med->mem[len] != '=' && med->mem[len])
+		len++;
+	str = ft_strndup(med->mem, len);
 	while (ewp != NULL)
 	{
-		if (ft_strcmp(str, env->name) == 0)
+		if (ft_strcmp(str, ewp->name) == 0)
+		{
+			ft_strdel(&str);
 			return (1);
+		}
 		ewp = ewp->next;
 	}
+	ft_strdel(&str);
 	return (0);
 }
 

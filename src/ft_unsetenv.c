@@ -22,11 +22,6 @@ char	*ft_strcdup(char *str, char c)
 		len++;
 	fresh = ft_strndup(str, len);
 	fresh[len] = '\0';
-	if (str[len] == '\0')
-	{
-		free(fresh);
-		return (NULL);
-	}
 	return (fresh);
 }
 
