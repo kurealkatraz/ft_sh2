@@ -1,0 +1,7 @@
+/!\Issues when PATH is unset/!\
+CD
+Termcaps
+Check SHlvls
+pipes
+heredocs
+inputs
