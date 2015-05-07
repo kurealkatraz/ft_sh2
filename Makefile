@@ -50,13 +50,13 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-all : lib $(NAME)
+all : $(NAME)
 
-lib :
+libft.a :
 	make -C $(LIB_PATH) re
 	cp $(LIB_PATH)$(LIB_NAME) .
 
-$(NAME) : $(OBJ)
+$(NAME) : libft.a $(OBJ)
 	$(CC) $(CFLAGS) $(INC) -o $(NAME) $(OBJ) $(LIB_NAME) -g
 
 $(OBJ_PATH)%.o : $(SRC_PATH)%.c

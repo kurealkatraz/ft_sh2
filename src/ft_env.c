@@ -46,17 +46,6 @@ t_env	*ft_make_usr_env(t_env *env, t_lex *med)
 	return (ewp);
 }
 
-t_env	*ft_free_one_env(t_env	*env)
-{
-	t_env	*swp;
-
-	free(env->name);
-	free(env->value);
-	swp = env->next;
-	free(env);
-	return (swp);
-}
-
 t_env	*ft_free_usr_env(t_env *env, t_lex *med)
 {
 	int		free_len;
@@ -250,6 +239,35 @@ t_env	*ft_env(t_lex *med, t_env *env)
 	}
 	else
 		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));	//must do path compability
+	return (env);
+}
+
+t_env	*ft_free_one_env(t_env	*env)
+{
+	t_env	*swp;
+
+	free(env->name);
+	free(env->value);
+	swp = env->next;
+	free(env);
+	return (swp);
+}
+
+t_env	*ft_del_env(t_env *env, t_env *del)
+{
+	t_env	*swp;
+
+	swp = env;
+	if (del == NULL)
+		return (env);
+	if (del == env)
+	{
+		return (env);
+		env = ft_free_one_env(del);
+	}
+	while (swp->next != del)
+		swp = swp->next;
+	swp->next = ft_free_one_env(del);
 	return (env);
 }
 

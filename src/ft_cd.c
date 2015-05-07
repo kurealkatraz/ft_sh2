@@ -17,6 +17,9 @@ t_env	ft_cd(t_lex *med, t_env *env)
 	t_lex	*swp;
 
 	swp = med;
+	
 	//wait till unsetenv and setenv is implemented
+	//it is now
+	//it is i
 	return (env);
 }

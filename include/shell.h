@@ -112,6 +112,7 @@ t_env	*ft_env(t_lex *med, t_env *env);
 t_env	*ft_new_env(t_env *env, char *full);
 t_env	*ft_get_env(t_env *env, char **envp);
 t_lex	*ft_free_single_lex(t_lex *med);
+t_env	*ft_del_env(t_env *env, t_env *del);
 
 /*
 **	get_next_line.c
@@ -169,5 +170,9 @@ void	ft_scann_eror(int err_index, char *erro);
 **	ft_unsetenv.c
 */
 char	*ft_strcdup(char *str, char c);
+void	ft_usrunenv_error(char *err, int mol);
+t_lex	*ft_check_usunenv(t_lex *med, t_env *env);
+t_env	*ft_get_del_env(t_lex *med, t_env *env);
+t_env	*ft_unsetenv(t_lex *med, t_env *env);
 
 #endif
