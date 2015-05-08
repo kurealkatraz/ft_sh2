@@ -246,9 +246,9 @@ t_env	*ft_free_one_env(t_env	*env)
 {
 	t_env	*swp;
 
+	swp = env->next;
 	free(env->name);
 	free(env->value);
-	swp = env->next;
 	free(env);
 	return (swp);
 }
@@ -262,8 +262,8 @@ t_env	*ft_del_env(t_env *env, t_env *del)
 		return (env);
 	if (del == env)
 	{
+		env = ft_free_one_env(env);
 		return (env);
-		env = ft_free_one_env(del);
 	}
 	while (swp->next != del)
 		swp = swp->next;

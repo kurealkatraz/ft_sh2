@@ -64,12 +64,12 @@ t_lex	*ft_check_usunenv(t_lex *med, t_env *env)
 	return (med);
 }
 
-t_env	*ft_get_del_env(t_lex *med, t_env *env)
+t_env	*ft_get_del_env(char *mol, t_env *env)
 {
 	t_env	*swp;
 
 	swp = env;
-	while (swp && ft_strcmp(swp->name, med->mem) != 0)
+	while (swp && ft_strcmp(swp->name, mol) != 0)
 		swp = swp->next;
 	return (swp);
 }
@@ -82,7 +82,7 @@ t_env	*ft_unsetenv(t_lex *med, t_env *env)
 	swp = ft_check_usunenv(swp, env);
 	while (swp != NULL)
 	{
-		env = ft_del_env(env, ft_get_del_env(swp, env));
+		env = ft_del_env(env, ft_get_del_env(swp->mem, env));
 		swp = swp->next;
 	}
 	return (env);

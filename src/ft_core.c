@@ -14,17 +14,9 @@
 
 t_env	*ft_core(char *line, t_env *env)
 {
-	int		out;
-
-	out = 0;
 	line = ft_clean_str(line);
-	out = ft_child_molesting(line, env);
+	env = ft_child_molesting(line, env);
 	free(line);
-	if (out == 1)
-	{
-		//env = ft_free_all_env(env);
-		return (NULL);
-	}
 	return (env);
 }
 

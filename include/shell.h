@@ -132,7 +132,8 @@ t_lex	*ft_lexor(char *line);
 /*
 **	ft_chldabs
 */
-int		ft_child_molesting(char *line, t_env *env);
+t_env	*ft_free_all_env(t_env *env);
+t_env	*ft_child_molesting(char *line, t_env *env);
 
 /*
 **	ft_lex_mcr.c
@@ -172,7 +173,7 @@ void	ft_scann_eror(int err_index, char *erro);
 char	*ft_strcdup(char *str, char c);
 void	ft_usrunenv_error(char *err, int mol);
 t_lex	*ft_check_usunenv(t_lex *med, t_env *env);
-t_env	*ft_get_del_env(t_lex *med, t_env *env);
+t_env	*ft_get_del_env(char *mol, t_env *env);
 t_env	*ft_unsetenv(t_lex *med, t_env *env);
 
 #endif
