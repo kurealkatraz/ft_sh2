@@ -1,5 +1,5 @@
 /!\Issues when PATH is unset/!\
-CD
+CD - Unsets debugs
 Termcaps
 Check SHlvls
 pipes

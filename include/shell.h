@@ -176,4 +176,12 @@ t_lex	*ft_check_usunenv(t_lex *med, t_env *env);
 t_env	*ft_get_del_env(char *mol, t_env *env);
 t_env	*ft_unsetenv(t_lex *med, t_env *env);
 
+/*
+**	ft_cd.c
+*/
+void	ft_uscderror(char *err, int mol);
+t_env	*ft_cd_prev(t_lex *med, t_env *env);
+t_env	*ft_cd_usr(t_lex *med, t_env *env);
+t_env	*ft_cd(t_lex *med, t_env *env);
+
 #endif
