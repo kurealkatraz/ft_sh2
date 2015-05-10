@@ -26,7 +26,7 @@ void	ft_uscderror(char *err, int mol)
 	{
 		ft_putstr("ERROR : ");
 		ft_putstr(C_CYAN);
-		ft_putstr("PWD");
+		ft_putstr("(OLD)PWD / HOME");
 		ft_putstr(C_RED);
 		ft_putendl(" was unset or not valid.");
 	}
@@ -46,17 +46,19 @@ t_env	*ft_cd_prev(t_lex *med, t_env *env)
 	char	*join;
 
 	join = NULL;
-	if (chdir(ft_get_del_env("OLDPWD", env)->value) != 0)
+	if ((ft_get_del_env("OLDPWD", env)) && (chdir(ft_get_del_env("OLDPWD", env)->value) != 0))
 	{
 		ft_uscderror(med->mem, 001);
 		return (env);
 	}
 	else if (med->next->next)
 		ft_uscderror(med->mem, 000);
-	join = ft_strjoin("OLDPWD=", (ft_get_del_env("PWD", env))->value);
+	if (ft_get_del_env("PWD", env) != NULL)
+		join = ft_strjoin("OLDPWD=", (ft_get_del_env("PWD", env))->value);
 	env = ft_del_env(env, ft_get_del_env("OLDPWD", env));
 	env = ft_del_env(env, ft_get_del_env("PWD", env));
-	env = ft_new_env(env, join);
+	if (join)
+		env = ft_new_env(env, join);
 	ft_strdel(&join);
 	join = ft_strjoin("PWD=", getcwd(NULL, 0));
 	env = ft_new_env(env, join);
@@ -74,7 +76,35 @@ t_env	*ft_cd_usr(t_lex *med, t_env *env)
 		ft_uscderror(med->next->mem, 002);
 		return (env);
 	}
+	if (ft_get_del_env("PWD", env) != NULL)
+		join = ft_strjoin("OLDPWD=", (ft_get_del_env("PWD", env))->value);
+	env = ft_del_env(env, ft_get_del_env("OLDPWD", env));
+	env = ft_del_env(env, ft_get_del_env("PWD", env));
+	if (join)
+		env = ft_new_env(env, join);
 	ft_strdel(&join);
+	join = ft_strjoin("PWD=", getcwd(NULL, 0));
+	env = ft_new_env(env, join);
+	ft_strdel(&join);
+	return (env);
+}
+
+t_env	*ft_cd_home(t_env *env)
+{
+	t_env	*home;
+	char	*join;
+
+	join = NULL;
+	if ((home = ft_get_del_env("HOME", env)) == NULL)
+	{
+		ft_uscderror(NULL, 001);
+		return (env);
+	}
+	if (chdir(home->value) != 0)
+	{
+		ft_uscderror(NULL, 001);
+		return (env);
+	}
 	join = ft_strjoin("OLDPWD=", (ft_get_del_env("PWD", env))->value);
 	env = ft_del_env(env, ft_get_del_env("OLDPWD", env));
 	env = ft_del_env(env, ft_get_del_env("PWD", env));
@@ -91,7 +121,9 @@ t_env	*ft_cd(t_lex *med, t_env *env)
 	t_lex	*swp;
 
 	swp = med;
-	if (ft_strcmp(swp->next->mem, "-") == 0)
+	if (!swp->next)
+		return (env = ft_cd_home(env));
+	else if (ft_strcmp(swp->next->mem, "-") == 0)
 		return (env = ft_cd_prev(swp, env));
 	else if (swp->next->next)
 		ft_uscderror(NULL, 000);
