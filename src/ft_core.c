@@ -12,10 +12,10 @@
 
 #include "shell.h"
 
-t_env	*ft_core(char *line, t_env *env)
+t_env	*ft_core(char *line, t_env *env, int *ext)
 {
 	line = ft_clean_str(line);
-	env = ft_child_molesting(line, env);
+	env = ft_child_molesting(line, env, ext);
 	free(line);
 	return (env);
 }
@@ -23,18 +23,19 @@ t_env	*ft_core(char *line, t_env *env)
 void	ft_prompt(char **envp, t_env *env)
 {
 	char	*line;
+	int		*ext;
 
-	while (env != NULL)
+	ext = (int*)malloc(sizeof(int));
+	*ext = 0;
+	while (*ext == 0)
 	{
 		line = NULL;
 		ft_colors(envp);
 		if (1 == ft_get_next_line(0, &line))
 		{
 			if (line[0] != '\0')
-				env = ft_core(line, env);
+				env = ft_core(line, env, ext);
 		}
-		else
-			exit(-1);
 	}
 }
 
@@ -54,17 +55,27 @@ t_env	*shlvl_pp(t_env *env)
 	return (env);
 }
 
+t_env	*ft_get_min_env(t_env *env)
+{
+	env = ft_new_env(env, "PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin");
+	return (env);
+}
+
 int		main(int argc, char **argv, char **envp)
 {
 	t_env	*env;
 
-	if (envp != NULL)
+	env = NULL;
+	if (*envp != NULL)
 	{
-		env = ft_get_env(NULL, envp);
+		env = ft_get_env(env, envp);
 		env = shlvl_pp(env);
 	}
 	else
-		env = NULL;
+	{
+		env = ft_get_min_env(env);
+		env = shlvl_pp(env);
+	}
 	ft_prompt(envp, env);
 	argv = argv + 0;
 	argc = argc + 0;

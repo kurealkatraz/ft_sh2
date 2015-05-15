@@ -1,7 +1,8 @@
 /!\Issues when PATH is unset/!\
-CD - Unsets debugs
+env -i launch
+CD - Unsets debugs (seems ok)
 Termcaps
-Check SHlvls
+Check SHlvls (Seems ok)
 pipes
 heredocs
 inputs

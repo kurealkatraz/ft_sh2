@@ -220,6 +220,8 @@ t_env	*ft_env(t_lex *med, t_env *env)
 	swp = med;
 	ewp = env;
 	pars = 0;
+	if (env == NULL)
+		return (env);
 	if (swp->next)
 		if (ft_strcmp(swp->next->mem, "-i") == 0)
 		{

@@ -73,7 +73,7 @@ t_env	*ft_free_all_env(t_env *env)
 	return (NULL);
 }
 
-t_env	*ft_child_molesting(char *line, t_env *env)
+t_env	*ft_child_molesting(char *line, t_env *env, int *ext)
 {
 	t_lex	*med;
 	t_pth	*pth;
@@ -83,19 +83,20 @@ t_env	*ft_child_molesting(char *line, t_env *env)
 	med = ft_lexor(line);
 	med = ft_rev_lex(med);
 	pth = ft_get_pth(pth, env);
-	if (pth == NULL)
-	{
-		med = ft_free_lex(med);
-		return (env);
-	}
-	med = ft_asign_path(pth, med);
+	if (pth != NULL)
+		med = ft_asign_path(pth, med);
 	if (ft_strcmp(med->mem, "exit") == 0)
+	{
+		*ext = 1;
 		return (ft_free_all_env(env));
+	}
 	med = ft_correction_facility(med);
 	if (med == NULL)
 		return (env);
 	env = ft_muzukashi(med, env);
-	ft_free_pth(pth);
-	med = ft_free_lex(med);
+	if (pth)
+		ft_free_pth(pth);
+	if (med)
+		med = ft_free_lex(med);
 	return (env);
 }

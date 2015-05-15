@@ -111,6 +111,11 @@ t_env   *ft_setenv(t_lex *med, t_env *env)
 
 	swp = med;
 	swp = ft_check_usenv(med, env);
+	if (env == NULL)
+	{
+		env = ft_new_env(env, swp->mem);
+		swp = swp->next;
+	}
 	while(swp != NULL)
 	{
 		ft_put_at_end_env(env, swp->mem);

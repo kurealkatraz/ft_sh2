@@ -91,7 +91,7 @@ void	ft_colors(char **envp);
 /*
 **	ft_core.c
 */
-t_env	*ft_core(char *line, t_env *env);
+t_env	*ft_core(char *line, t_env *env, int *ext);
 void	ft_prompt(char **envp, t_env *env);
 t_env	*shlvl_pp(t_env *env);
 
@@ -133,7 +133,7 @@ t_lex	*ft_lexor(char *line);
 **	ft_chldabs
 */
 t_env	*ft_free_all_env(t_env *env);
-t_env	*ft_child_molesting(char *line, t_env *env);
+t_env	*ft_child_molesting(char *line, t_env *env, int *ext);
 
 /*
 **	ft_lex_mcr.c
