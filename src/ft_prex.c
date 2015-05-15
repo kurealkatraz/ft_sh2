@@ -293,6 +293,29 @@ t_env	*ft_what_buildtin(t_lex *med, t_env *env)
 	return (env);
 }
 
+void	ft_left_s_redi(t_lex *med, t_env *env)
+{
+	t_lex	*swp;
+	int		sys;
+	pid_t	child;
+	int		fd;
+
+	ft_get_envp(env);
+	child = fork();
+	if (child == 0)
+	{
+		swp = med;
+		while (ft_strcmp("<",swp->mem) != 0)
+			swp = swp->next;
+		swp = swp->next;
+		fd = open(swp->mem, O_RDONLY);
+		dup2(fd, 1);
+		ft_exec(NULL, ft_make_argv(swp), ft_make_bin(swp));
+		kill(getpid(), SIGKILL);
+	}
+	wait(&sys);
+}
+
 t_env	*ft_parser(t_lex *med, t_env *env)
 {
 	t_lex	*swp;
@@ -306,6 +329,8 @@ t_env	*ft_parser(t_lex *med, t_env *env)
 				ft_right_s_redi(swp, env);
 			else if (ft_strcmp(">>", ft_get_redi(swp)) == 0)
 				ft_right_d_redi(swp, env);
+			else if (ft_strcmp("<", ft_get_redi(swp)) == 0)
+				ft_left_s_redi(swp, env);
 			else
 				return (env);
 		}
