@@ -311,6 +311,8 @@ t_env	*ft_parser(t_lex *med, t_env *env)
 		}
 		else if (ft_is_buildtin(swp->mem))
 			env = ft_what_buildtin(swp, env);
+		else if (ft_get_del_env("PATH", env) == NULL)
+			return (NULL);
 		else
 			ft_exec(ft_get_envp(env), ft_make_argv(swp), ft_make_bin(swp));
 		swp = ft_get_next_op(swp);

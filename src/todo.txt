@@ -1,5 +1,5 @@
 /!\Issues when PATH is unset/!\
-env -i launch
+env -i launch (seems ok)
 CD - Unsets debugs (seems ok)
 Termcaps
 Check SHlvls (Seems ok)
