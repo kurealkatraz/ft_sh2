@@ -12,10 +12,28 @@
 
 #include "shell.h"
 
+char	*ft_return_path_bin(char *med)
+{
+	if (access(med, F_OK) == -1)
+	{
+		ft_putstr(C_RED);
+		ft_putstr("Error : ");
+		ft_putstr(C_BLUE);
+		ft_putstr(med);
+		ft_putstr(C_RED);
+		ft_putendl(" is not valid");
+		return (NULL);
+	}
+	return (med);
+}
+
 char	*ft_make_bin(t_lex *med)
 {
 	char	*str;
 
+	str = NULL;
+	if (ft_ispath(med->mem))
+		return (ft_return_path_bin(med->mem));
 	str = (char*)malloc(sizeof(char) * (ft_strlen(med->mem)
 		+ ft_strlen(med->path) + 1));
 	ft_strcpy(str, med->path);

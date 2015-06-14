@@ -116,7 +116,7 @@ int		ft_env_noexec(t_lex *med)
 	mwp = med;
 	while (mwp != NULL && !ft_iscompl(mwp->mem[0]))
 	{
-		if (mwp->path != NULL && !ft_is_buildtin(mwp->mem))
+		if (ft_ispath(mwp->mem) && !ft_is_buildtin(mwp->mem))
 			return (0);
 		mwp = mwp->next;
 	}
@@ -174,7 +174,7 @@ int		ft_parse_env(t_lex *med)
 	while (mwp != NULL && !ft_iscompl(mwp->mem[0]))
 	{
 		index = ft_lex_env(mwp);
-		if (index == -1 && mwp->path == NULL)
+		if (index == -1 && mwp->path == NULL && !ft_ispath(mwp->mem))
 		{
 			mwp = ft_del_lex_mem(save, mwp);
 			if (mwp == med)
@@ -220,8 +220,6 @@ t_env	*ft_env(t_lex *med, t_env *env)
 	swp = med;
 	ewp = env;
 	pars = 0;
-	if (env == NULL)
-		return (env);
 	if (swp->next)
 		if (ft_strcmp(swp->next->mem, "-i") == 0)
 		{
