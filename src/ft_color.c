@@ -35,7 +35,7 @@ char	*ft_getpath(void)
 
 	if (!(buff = getcwd(NULL, 0)) ||
 			!(fresh = (char*)malloc(sizeof(char) * (ft_strlen(buff) + 1))))
-		return (ft_strdup("MadMoon"));
+		return (ft_strdup("You did not just did this. You wicked devil."));
 	i = ft_strlen(buff);
 	j = 0;
 	while (i > 0)
