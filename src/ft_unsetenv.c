@@ -69,6 +69,8 @@ t_env	*ft_get_del_env(char *mol, t_env *env)
 	t_env	*swp;
 
 	swp = env;
+	if (env == NULL || mol == NULL)
+		return (env);
 	while (swp && ft_strcmp(swp->name, mol) != 0)
 		swp = swp->next;
 	return (swp);

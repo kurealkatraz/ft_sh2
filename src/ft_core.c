@@ -48,7 +48,7 @@ t_env	*shlvl_pp(t_env *env)
 	while (swap->next != NULL && 0 != ft_strncmp("SHLVL", swap->name, 5))
 		swap = swap->next;
 	if (swap->next == NULL)
-		return (swap);
+		return (env);
 	inception = ft_atoi(swap->value) + 1;
 	free(swap->value);
 	swap->value = ft_itoa(inception);
@@ -67,15 +67,10 @@ int		main(int argc, char **argv, char **envp)
 
 	env = NULL;
 	if (*envp != NULL)
-	{
 		env = ft_get_env(env, envp);
-		env = shlvl_pp(env);
-	}
-	else
-	{
+	if (ft_get_del_env("PATH", env) == NULL)
 		env = ft_get_min_env(env);
-		env = shlvl_pp(env);
-	}
+	env = shlvl_pp(env);
 	ft_prompt(envp, env);
 	argv = argv + 0;
 	argc = argc + 0;
