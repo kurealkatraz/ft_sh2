@@ -318,20 +318,61 @@ void	ft_left_s_redi(t_lex *med, t_env *env)
 	pid_t	child;
 	int		fd;
 
-	ft_get_envp(env);
 	child = fork();
 	if (child == 0)
 	{
 		swp = med;
 		while (ft_strcmp("<",swp->mem) != 0)
 			swp = swp->next;
+		if (access(swp->next->mem, F_OK) == -1)
+		{
+			ft_putstr(C_RED);
+			ft_putstr("no such file or directory ");
+			ft_putstr(C_CYAN);
+			ft_putendl(swp->next->mem);
+			ft_putstr(C_NONE);
+			kill(getpid(), SIGKILL);
+		}
 		swp = swp->next;
-		fd = open(swp->mem, O_RDONLY);
-		dup2(fd, 1);
-		ft_exec(NULL, ft_make_argv(swp), ft_make_bin(swp));
+		fd = open(swp->mem, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		dup2(1, fd);
+		ft_exec(ft_get_envp(env), ft_make_argv(med), ft_make_bin(med));
+		close(fd);
 		kill(getpid(), SIGKILL);
 	}
 	wait(&sys);
+}
+
+void	ft_left_d_redi(t_lex *med, t_env *env)
+{
+	t_lex	*swp;
+	int		sys;
+	pid_t	child;
+	char	*str;
+	t_lex	*here_holder;
+
+	child = fork();
+	str = NULL;
+	here_holder = NULL;
+	env = env + 0;
+	sys = 0;
+	sys = sys + 0;
+	if (child == 0)
+	{
+		swp = med;
+		while (ft_strcmp("<<", swp->mem) != 0)
+			swp = swp->next;
+		swp = swp ->next;
+		while (ft_strcmp(str, swp->mem) != 0)
+		{
+			if (ft_get_next_line(1, &str) == 1)
+				here_holder = ft_new_meme(here_holder, str);
+		}
+		here_holder = ft_rev_lex(here_holder);
+		ft_free_lex(here_holder);
+	}
+	else
+		wait(&sys);
 }
 
 t_env	*ft_parser(t_lex *med, t_env *env)
@@ -349,6 +390,8 @@ t_env	*ft_parser(t_lex *med, t_env *env)
 				ft_right_d_redi(swp, env);
 			else if (ft_strcmp("<", ft_get_redi(swp)) == 0)
 				ft_left_s_redi(swp, env);
+			else if (ft_strcmp("<<", ft_get_redi(swp)) == 0)
+				ft_left_d_redi(swp, env);
 			else
 				return (env);
 		}
