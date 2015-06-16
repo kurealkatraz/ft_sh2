@@ -116,7 +116,7 @@ int		ft_env_noexec(t_lex *med)
 	mwp = med;
 	while (mwp != NULL && !ft_iscompl(mwp->mem[0]))
 	{
-		if (ft_ispath(mwp->mem) && !ft_is_buildtin(mwp->mem))
+		if ((ft_ispath(mwp->mem) || mwp->path) && !ft_is_buildtin(mwp->mem))
 			return (0);
 		mwp = mwp->next;
 	}
@@ -206,7 +206,12 @@ t_lex	*ft_get_exec(t_lex *med)
 	t_lex	*mwp;
 
 	mwp = med;
-	while (mwp && ( !ft_ispath(mwp->mem) && mwp->path == NULL))
+	while (mwp && !ft_ispath(mwp->mem))
+		mwp = mwp->next;
+	if (mwp != NULL)
+		return (mwp);
+	mwp = med;
+	while (mwp && !mwp->path && ft_strcmp(mwp->mem, "env") != 0)
 		mwp = mwp->next;
 	return (mwp);
 }
@@ -235,10 +240,10 @@ t_env	*ft_env(t_lex *med, t_env *env)
 	else if (pars == 3)
 	{
 		ewp = ft_make_usr_env(ewp, med);
-		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med->next)), ft_make_bin(ft_get_exec(med->next)));	//must do path compability
+		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));	//must do path compability
 	}
 	else
-		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med->next)), ft_make_bin(ft_get_exec(med->next)));	//must do path compability
+		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));	//must do path compability
 	return (env);
 }
 
