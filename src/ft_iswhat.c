@@ -122,7 +122,22 @@ int		ft_iscompl(char c)
 	return (0);
 }
 
-int		ft_is_next_op_fag(t_lex *med)
+int		ft_is_what_len(t_lex *med)
+{
+	t_lex	*swp;
+	int		len;
+
+	len = 0;
+	swp = med;
+	while (swp)
+	{
+		swp = swp->next;
+		len++;
+	}
+	return (len);
+}
+
+int		ft_is_next_op_pipe(t_lex *med)
 {
 	t_lex	*swp;
 
@@ -131,7 +146,7 @@ int		ft_is_next_op_fag(t_lex *med)
 	{
 		if (ft_ispipe(med->mem[0]))
 			return (1);
-		swp = spw->next;
+		swp = swp->next;
 	}
 	return (0);
 }

@@ -81,12 +81,7 @@ char	**ft_make_argv(t_lex *med)
 
 	argv = NULL;
 	swp = med;
-	size = 0;
-	while (swp != NULL && !ft_iscompl(swp->mem[0]))
-	{
-		size++;
-		swp = swp->next;
-	}
+	size = ft_is_what_len(med);
 	argv = (char**)malloc(sizeof(char*) * (size) + 1);
 	swp = med;
 	size = 0;

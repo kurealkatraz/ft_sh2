@@ -57,6 +57,7 @@ t_env   *ft_setenv(t_lex *med, t_env *env);
 /*
 **	ft_prex.c
 */
+t_lex	*ft_get_next_op(t_lex *med);
 char	*ft_make_bin(t_lex *med);
 char	**ft_get_envp(t_env *env);
 char	**ft_make_argv(t_lex *med);
@@ -145,8 +146,9 @@ t_lex	*ft_rev_lex(t_lex *medivac);
 /*
 **	ft_iswhat.c
 */
+int		ft_is_what_len(t_lex *med);
 int		ft_ispipe(char c);
-int		ft_is_next_op_fag(t_lex *med);
+int		ft_is_next_op_pipe(t_lex *med);
 int		ft_iscompl(char c);
 int		ft_isalien(char c);
 int		ft_isredi(char c);
