@@ -145,6 +145,8 @@ t_lex	*ft_rev_lex(t_lex *medivac);
 /*
 **	ft_iswhat.c
 */
+int		ft_ispipe(char c);
+int		ft_is_next_op_fag(t_lex *med);
 int		ft_iscompl(char c);
 int		ft_isalien(char c);
 int		ft_isredi(char c);

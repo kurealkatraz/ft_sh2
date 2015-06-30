@@ -12,6 +12,13 @@
 
 #include "shell.h"
 
+int		ft_ispipe(char c)
+{
+	if (c == '|')
+		return (1);
+	return (0);
+}
+
 int		ft_is_env_dubs(t_env *env, t_lex *med)
 {
 	t_env	*ewp;
@@ -112,5 +119,19 @@ int		ft_iscompl(char c)
 {
 	if (c == '>' || c == '<' || c == '|')
 		return (1);
+	return (0);
+}
+
+int		ft_is_next_op_fag(t_lex *med)
+{
+	t_lex	*swp;
+
+	swp = med;
+	while (swp != NULL)
+	{
+		if (ft_ispipe(med->mem[0]))
+			return (1);
+		swp = spw->next;
+	}
 	return (0);
 }
