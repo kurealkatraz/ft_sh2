@@ -146,6 +146,7 @@ t_lex	*ft_rev_lex(t_lex *medivac);
 /*
 **	ft_iswhat.c
 */
+int		ft_is_what_len_pipe(t_lex *med);
 int		ft_is_what_len(t_lex *med);
 int		ft_ispipe(char c);
 int		ft_is_next_op_pipe(t_lex *med);
@@ -187,5 +188,13 @@ void	ft_uscderror(char *err, int mol);
 t_env	*ft_cd_prev(t_lex *med, t_env *env);
 t_env	*ft_cd_usr(t_lex *med, t_env *env);
 t_env	*ft_cd(t_lex *med, t_env *env);
+
+/*
+**	ft_pipes.c
+*/
+char	**ft_make_pipe_argv(t_lex *med, t_lex *added);
+char	**ft_del_tab(char **argv);
+t_lex	*ft_get_end_of_pipe(int	fd);
+t_lex	*ft_pipe_it(t_lex *med, t_env *env);
 
 #endif

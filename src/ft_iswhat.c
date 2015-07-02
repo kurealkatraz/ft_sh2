@@ -137,6 +137,21 @@ int		ft_is_what_len(t_lex *med)
 	return (len);
 }
 
+int		ft_is_what_len_pipe(t_lex *med)
+{
+	t_lex	*swp;
+	int		len;
+
+	len = 0;
+	swp = med;
+	while (swp && !ft_ispipe(swp->mem[0]))
+	{
+		swp = swp->next;
+		len++;
+	}
+	return (len);
+}
+
 int		ft_is_next_op_pipe(t_lex *med)
 {
 	t_lex	*swp;
@@ -144,7 +159,7 @@ int		ft_is_next_op_pipe(t_lex *med)
 	swp = med;
 	while (swp != NULL)
 	{
-		if (ft_ispipe(med->mem[0]))
+		if (ft_ispipe(swp->mem[0]))
 			return (1);
 		swp = swp->next;
 	}

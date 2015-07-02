@@ -18,7 +18,7 @@ char	**ft_make_pipe_argv(t_lex *med, t_lex *added)
 	t_lex		*swp;
 	int			len;
 
-	len = ft_is_what_len(med) + ft_is_what_len(added);
+	len = ft_is_what_len_pipe(med) + ft_is_what_len(added);
 	swp = med;
 	argv = (char**)malloc(sizeof(char*) * (len));
 	argv[len] = NULL;
@@ -53,30 +53,28 @@ char	**ft_del_tab(char **argv)
 t_lex	*ft_get_end_of_pipe(int	fd)
 {
 	char	*line;
-	char	**arg;
-	int		ss;
 	t_lex	*added;
 
 	added = NULL;
-	arg = NULL;
 	while (1 == ft_get_next_line(fd, &line))
-	{
-		if (line[0] != '\0')
-			return (NULL);
-		else
-		{
-			ss = 0;
-			line = ft_clean_str(line);
-			arg = ft_strsplit(line, ' ');
-			while (arg[ss])
-				added = ft_new_meme(added, arg[ss++]);
-		}
-	}
+		added = ft_new_meme(added, line);
 	if (line)
 		ft_strdel(&line);
-	if (arg)
-		arg = ft_del_tab(arg);
-	return (added);
+	return (ft_rev_lex(added));
+}
+
+t_lex	*ft_chain_pipe_it(t_lex *med, t_env *env, int src)
+{
+	t_lex	*added;
+	t_lex	*swp;
+	char	**argv;
+
+	swp = med;
+	env = env + 0;
+	added = ft_get_end_of_pipe(src);
+	argv = ft_make_pipe_argv(swp, added);
+	argv = ft_del_tab(argv);
+	return (med);
 }
 
 t_lex	*ft_pipe_it(t_lex *med, t_env *env)
@@ -84,24 +82,26 @@ t_lex	*ft_pipe_it(t_lex *med, t_env *env)
 	int		sys;
 	int		fd[2];
 	pid_t	child;
+	t_lex	*swp;
 
 	pipe(fd);
+	swp = med;
 	child = fork();
 	if (child == 0)
 	{
 		close(fd[0]);
 		dup2(fd[1], 1);
-		ft_exec(ft_get_envp(env), ft_make_argv(med), ft_make_bin(med));
+		ft_exec(ft_get_envp(env), ft_make_argv(swp), ft_make_bin(med));
 		kill(getpid(), SIGKILL);
 	}
 	else
 	{
 		close(fd[1]);
 		wait(&sys);
-		if (ft_is_next_op_pipe(med))
+		if (ft_is_next_op_pipe(ft_get_next_op(swp)))
 		{
-			med = ft_get_next_op(med);
-			//med = ft_chain_pipe_it(med, env, fd[0]);
+			swp = ft_get_next_op(swp);
+			swp = ft_chain_pipe_it(swp, env, fd[0]);
 		}
 	}
 	return (med);

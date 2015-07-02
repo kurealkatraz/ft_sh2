@@ -275,17 +275,15 @@ t_lex	*ft_get_next_op(t_lex *med)
 {
 	t_lex	*swp;
 
+	swp = med;
 	if (med == NULL)
 		return (med);
-	swp = med;
 	{
 		while (!ft_iscompl(swp->mem[0]))
 		{
-			swp = swp->next;
 			if (swp == NULL)
 				return (swp);
-			else if (ft_iscompl(swp->mem[0]))
-				swp = ft_get_next_op(swp->next);
+			swp = swp->next;
 			if (swp == NULL)
 				return (swp);
 		}
@@ -390,6 +388,8 @@ t_env	*ft_parser(t_lex *med, t_env *env)
 			else
 				return (env);
 		}
+		else if (ft_is_next_op_pipe(swp))
+			ft_pipe_it(swp, env);
 		else if (ft_is_buildtin(swp->mem))
 			env = ft_what_buildtin(swp, env);
 		else if (ft_get_del_env("PATH", env) == NULL)
