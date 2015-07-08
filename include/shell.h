@@ -200,6 +200,7 @@ t_env	*ft_cd(t_lex *med, t_env *env);
 /*
 **	ft_pipes.c
 */
+t_lex	*ft_chain_pipe_it(t_lex *med, t_env *env, int src);
 char	**ft_make_pipe_argv(t_lex *med, t_lex *added);
 char	**ft_del_tab(char **argv);
 t_lex	*ft_get_end_of_pipe(int	fd);
