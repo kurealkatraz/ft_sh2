@@ -17,24 +17,26 @@ char	**ft_make_pipe_argv(t_lex *med, t_lex *added)
 	char		**argv;
 	t_lex		*swp;
 	int			len;
+	int			ss;
 
 	len = ft_is_what_len_pipe(med) + ft_is_what_len(added);
 	swp = med;
 	argv = (char**)malloc(sizeof(char*) * (len));
 	argv[len] = NULL;
-	while (swp != NULL && !ft_iscompl(swp->mem[0]))
+	ss = 0;
+	while (swp != NULL && swp->mem[0] != '|' && ss <= len)
 	{
-		argv[len] = (char*)malloc(sizeof(char) * ft_strlen(swp->mem) + 1);
-		argv[len] = ft_strcpy(argv[len], swp->mem);
-		argv[++len] = NULL;
+		argv[ss] = (char*)malloc(sizeof(char) * ft_strlen(swp->mem) + 1);
+		argv[ss] = ft_strcpy(argv[ss], swp->mem);
+		argv[++ss] = NULL;
 		swp = swp->next;
 	}
 	swp = added;
-	while (swp != NULL)
+	while (swp != NULL && ss <= len)
 	{
-		argv[len] = (char*)malloc(sizeof(char) * ft_strlen(swp->mem) + 1);
-		argv[len] = ft_strcpy(argv[len], swp->mem);
-		argv[++len] = NULL;
+		argv[ss] = (char*)malloc(sizeof(char) * ft_strlen(swp->mem) + 1);
+		argv[ss] = ft_strcpy(argv[ss], swp->mem);
+		argv[++ss] = NULL;
 		swp = swp->next;
 	}
 	return (argv);
@@ -46,7 +48,10 @@ char	**ft_del_tab(char **argv)
 
 	ss = 0;
 	while (argv[ss] != NULL)
-		ft_strdel(&argv[ss++]);
+	{
+		ft_strdel(&argv[ss]);
+		ss++;
+	}
 	return (NULL);
 }
 
@@ -61,6 +66,7 @@ t_lex	*ft_get_end_of_pipe(int	fd)
 		added = ft_new_meme(added, line);
 	added = ft_rev_lex(added);
 	swp = added;
+	close(fd);
 	return (added);
 }
 
