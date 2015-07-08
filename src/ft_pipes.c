@@ -57,17 +57,8 @@ t_lex	*ft_get_end_of_pipe(int	fd)
 	t_lex	*added;
 
 	added = NULL;
-	while (1 == ft_get_next_line(fd, &line))
-	{
-		ft_putendl(line);
+	while (1 == ft_get_file(fd, &line))
 		added = ft_new_meme(added, line);
-	}
-	swp = added;
-	while (swp)
-	{
-		ft_putendl(swp->mem);
-		swp = swp->next;
-	}
 	added = ft_rev_lex(added);
 	swp = added;
 	return (added);
@@ -77,13 +68,18 @@ t_lex	*ft_chain_pipe_it(t_lex *med, t_env *env, int src)
 {
 	t_lex	*added;
 	t_lex	*swp;
+	t_lex	*tmp;
 	char	**argv;
 
 	swp = med;
 	env = env + 0;
+	added = NULL;
 	added = ft_get_end_of_pipe(src);
 	swp = med;
-	argv = ft_make_pipe_argv(swp, added);
+	tmp = added;
+	argv = ft_make_pipe_argv(swp, tmp);
+	dup2(1, 1);
+	ft_exec(ft_get_envp(env), argv, med->mem);	//need some tweeking
 	argv = ft_del_tab(argv);
 	return (med);
 }
@@ -107,13 +103,13 @@ t_lex	*ft_pipe_it(t_lex *med, t_env *env)
 	}
 	else
 	{
-		close(fd[1]);
 		wait(&sys);
+		close(fd[1]);
 		if (ft_is_next_op_pipe(ft_get_next_op(swp)))
 		{
 			swp = ft_get_next_op(swp);
 			swp = ft_chain_pipe_it(swp, env, fd[0]);
 		}
 	}
-	return (med);
+	return (swp);
 }

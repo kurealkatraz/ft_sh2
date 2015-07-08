@@ -13,6 +13,7 @@
 #ifndef SHELL_H
 # define SHELL_H
 # define BUF_SIZE 42
+# define BUFF_SIZE 42
 
 # include "colors.h"
 # include "libft.h"
@@ -44,6 +45,13 @@ typedef struct		s_pth
 	char			*path;
 	struct s_pth	*next;
 }					t_pth;
+
+/*
+**	ft_get_file.c
+*/
+int		ft_get_file(const int fd, char **line);
+char	*ft_strcdup(char *str, char c);
+int		error(char **holder);
 
 /*
 **	ft_setenv.c
