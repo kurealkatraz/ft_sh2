@@ -111,14 +111,22 @@ void	ft_cre_exec_req(char **b, char ***a, char ***e, t_lex *m, t_env *en)
 	t_lex	*swp;
 
 	swp = m;
-	*b = ft_make_bin(swp);
-	*a = ft_make_argv(swp);
-	*e = ft_get_envp(en);
+	if (b)
+		*b = ft_make_bin(swp);
+	if (a)
+		*a = ft_make_argv(swp);
+	if (e)
+		*e = ft_get_envp(en);
 }
 
 /*
 **	WILL GO IN UTILITY.C
 */
+
+t_lex	*ft_chain_pipe_it(t_lex *med, t_env *env, int forwardfd)
+{
+	
+}
 
 t_lex	*ft_pipe_it(t_lex *med, t_env *env)
 {
