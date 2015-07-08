@@ -85,6 +85,7 @@ int		ft_pipe_mech(char **env, char *bin, char **argv)
 		close(fd[1]);
 		dup2(fd[1], 1);
 		ft_exec(env, argv, bin);
+		close(fd[0]);	//must check
 		kill(getpid(), SIGKILL);
 	}
 	else
@@ -125,7 +126,25 @@ void	ft_cre_exec_req(char **b, char ***a, char ***e, t_lex *m, t_env *en)
 
 t_lex	*ft_chain_pipe_it(t_lex *med, t_env *env, int forwardfd)
 {
-	
+	char	**argv;
+	char	**envp;
+	char	*bin;
+	t_lex	*added;
+	t_lex	*swp;
+
+	swp = med;
+	bin = NULL;
+	envp = ft_get_envp(env);
+	bin = ft_strdup(med->mem);
+	added = ft_get_end_of_pipe(forwardfd);
+	close(forwardfd);
+	argv = ft_make_pipe_argv(med, added);
+	if (ft_is_next_op_pipe(ft_get_next_op(swp)))
+		swp = ft_chain_pipe_it(ft_get_next_op(swp), env, ft_pipe_mech(envp, bin, argv));
+	else
+		ft_exec(envp, argv, bin);
+	ft_del_exec_req(&bin, &argv, &envp);
+	return (swp);
 }
 
 t_lex	*ft_pipe_it(t_lex *med, t_env *env)
@@ -138,7 +157,6 @@ t_lex	*ft_pipe_it(t_lex *med, t_env *env)
 	swp = med;
 	argv = NULL;
 	envp = NULL;
-	bin = NULL;
 	if (ft_is_next_op_pipe(ft_get_next_op(swp)))
 	{
 		ft_cre_exec_req(&bin, &argv, &envp, swp, env);
