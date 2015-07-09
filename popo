@@ -1,0 +1,9 @@
+total 448
+-rw-r--r--    1 mgras  2014_paris    2104 Jul  9 11:56 Makefile
+-rwxr-xr-x    1 mgras  2014_paris   61564 Jul  9 11:59 ft_minishell2
+drwxr-xr-x    5 mgras  2014_paris     170 Jul  9 11:56 include
+drwxr-xr-x  123 mgras  2014_paris    4182 Jul  9 11:58 libft
+-rw-r--r--    1 mgras  2014_paris  156232 Jul  9 11:58 libft.a
+drwxr-xr-x   20 mgras  2014_paris     680 Jul  9 11:59 obj
+-rw-r--r--    1 mgras  2014_paris       0 Jul  9 11:59 popo
+drwxr-xr-x   21 mgras  2014_paris     714 Jul  9 11:56 src

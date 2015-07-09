@@ -368,6 +368,20 @@ void	ft_left_d_redi(t_lex *med, t_env *env)
 		wait(&sys);
 }
 
+t_lex	*ft_check_if_more(t_lex *med)
+{
+	t_lex	*swp;
+
+	swp = med;
+	while (swp)
+	{
+		if (swp->path || ft_is_buildtin(swp->mem))
+			return (med);
+		swp = swp->next;
+	}
+	return (NULL);
+}
+
 t_env	*ft_parser(t_lex *med, t_env *env)
 {
 	t_lex	*swp;
@@ -397,6 +411,7 @@ t_env	*ft_parser(t_lex *med, t_env *env)
 		else
 			ft_exec(ft_get_envp(env), ft_make_argv(swp), ft_make_bin(swp));
 		swp = ft_get_next_op(swp);
+		swp = ft_check_if_more(swp);
 	}
 	return (env);
 }
