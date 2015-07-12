@@ -12,6 +12,34 @@
 
 #include "shell.h"
 
+/*
+** WILL GO IN UTILITY.C
+*/
+
+void	ft_del_exec_req(char **bin, char ***argv, char ***envp)
+{
+	ft_strdel(bin);
+	ft_del_tab(*argv);
+	ft_del_tab(*envp);
+}
+
+void	ft_cre_exec_req(char **b, char ***a, char ***e, t_lex *m, t_env *en)
+{
+	t_lex	*swp;
+
+	swp = m;
+	if (b)
+		*b = ft_make_bin(swp);
+	if (a)
+		*a = ft_make_argv(swp);
+	if (e)
+		*e = ft_get_envp(en);
+}
+
+/*
+**	WILL GO IN UTILITY.C
+*/
+
 char	**ft_make_pipe_argv(t_lex *med, t_lex *added)
 {
 	char		**argv;
@@ -39,6 +67,7 @@ char	**ft_make_pipe_argv(t_lex *med, t_lex *added)
 		argv[++ss] = NULL;
 		swp = swp->next;
 	}
+	ft_free_lex(added);
 	return (argv);
 }
 
@@ -60,19 +89,17 @@ char	**ft_del_tab(char **argv)
 t_lex	*ft_get_end_of_pipe(int	fd)
 {
 	char	*line;
-	t_lex	*swp;
 	t_lex	*added;
 
 	added = NULL;
 	while (1 == ft_get_file(fd, &line))
 		added = ft_new_meme(added, line);
 	added = ft_rev_lex(added);
-	swp = added;
 	close(fd);
 	return (added);
 }
 
-int		ft_pipe_mech(char **env, char *bin, char **argv)
+int		ft_pipe_pipes(char *bin, char **argv, char **env)
 {
 	int		fd[2];
 	int		sys;
@@ -96,79 +123,32 @@ int		ft_pipe_mech(char **env, char *bin, char **argv)
 	return (fd[1]);
 }
 
-/*
-** WILL GO IN UTILITY.C
-*/
-void	ft_del_exec_req(char **bin, char ***argv, char ***envp)
-{
-	if (&bin)
-		ft_strdel(bin);
-	ft_del_tab(*argv);
-	ft_del_tab(*envp);
-}
-
-void	ft_cre_exec_req(char **b, char ***a, char ***e, t_lex *m, t_env *en)
-{
-	t_lex	*swp;
-
-	swp = m;
-	if (b)
-		*b = ft_make_bin(swp);
-	if (a)
-		*a = ft_make_argv(swp);
-	if (e)
-		*e = ft_get_envp(en);
-}
-
-/*
-**	WILL GO IN UTILITY.C
-*/
-
-t_lex	*ft_chain_pipe_it(t_lex *med, t_env *env, int forwardfd)
-{
-	char	**argv;
-	char	**envp;
-	char	*bin;
-	t_lex	*added;
-	t_lex	*swp;
-
-	swp = med;
-	bin = NULL;
-	envp = ft_get_envp(env);
-	bin = ft_strdup(med->mem);
-	added = ft_get_end_of_pipe(forwardfd);
-	close(forwardfd);
-	argv = ft_make_pipe_argv(med, added);
-	if (ft_is_next_op_pipe(ft_get_next_op(swp)))
-		swp = ft_chain_pipe_it(ft_get_next_op(swp), env, ft_pipe_mech(envp, bin, argv));
-	else
-		ft_exec(envp, argv, bin);
-	ft_del_exec_req(&bin, &argv, &envp);
-	return (swp);
-}
-
 t_lex	*ft_pipe_it(t_lex *med, t_env *env)
 {
 	char	**envp;
 	char	**argv;
 	char	*bin;
 	t_lex	*swp;
+	int		fd;
 
 	swp = med;
-	argv = NULL;
-	envp = NULL;
-	if (ft_is_next_op_pipe(ft_get_next_op(swp)))
+	fd = 0;
+	while (ft_is_next_op_pipe(ft_get_next_op(swp)))
 	{
-		ft_cre_exec_req(&bin, &argv, &envp, swp, env);
-		swp = ft_chain_pipe_it(ft_get_next_op(swp), env, ft_pipe_mech(envp, bin, argv));
-		ft_del_exec_req(&bin, &argv, &envp);
-		ft_exec(envp, argv, bin);
-	}
-	else
-	{
-		ft_cre_exec_req(&bin, &argv, &envp, swp, env);
-		ft_exec(envp, argv, bin);
-		ft_del_exec_req(&bin, &argv, &envp);
+		if (fd == 0)
+		{
+			ft_cre_exec_req(&bin, &argv, &envp, swp, env);
+			fd = ft_pipe_pipes(bin, argv, envp);
+		}
+		else
+		{
+			ft_cre_exec_req(&bin, NULL, &envp, swp, env);
+			ft_make_pipe_argv(swp, ft_get_end_of_pipe(fd));
+			close(fd);
+			fd = ft_pipe_pipes(bin, argv, envp);
+			ft_del_exec_req(&bin, &argv, &envp);
+		}
+		ft_get_next_op(swp);
 	}
 	return (swp);
 }
