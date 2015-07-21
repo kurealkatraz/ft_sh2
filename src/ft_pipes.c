@@ -39,14 +39,13 @@ char	**ft_print_tab(char **tab)
 	return (tab);
 }
 
-void	ft_del_exec_req(char **bin, char ***argv, char ***envp)
+void	ft_del_exec_req(char **bin, char ***argv)
 {
 	ft_strdel(bin);
 	ft_del_tab(*argv);
-	ft_del_tab(*envp);
 }
 
-void	ft_cre_exec_req(char **b, char ***a, char ***e, t_lex *m, t_env *en)
+void	ft_cre_exec_req(char **b, char ***a, t_lex *m)
 {
 	t_lex	*swp;
 
@@ -55,8 +54,6 @@ void	ft_cre_exec_req(char **b, char ***a, char ***e, t_lex *m, t_env *en)
 		*b = ft_make_bin(swp);
 	if (a)
 		*a = ft_make_argv(swp);
-	if (e)
-		*e = ft_get_envp(en);
 }
 
 /*
@@ -113,16 +110,13 @@ t_lex	*ft_get_end_of_pipe(int	fd)
 	t_lex	*added;
 
 	added = NULL;
-	while (1 == ft_get_file(fd, &line))
+	while (0 > ft_get_file(fd, &line))
 	{
-		ft_putstr(line);
-		added = ft_new_meme(added, line);
+		if (line)
+			added = ft_new_meme(added, line);
 	}
 	added = ft_rev_lex(added);
 	close(fd);
-	ft_putendl("start fd print");
-	ft_print_lex(added);
-	ft_putendl("end fd print");
 	return (added);
 }
 
@@ -138,6 +132,7 @@ int		ft_pipe_pipes(char *bin, char **argv, char **env)
 	{
 		close(fd[0]);
 		dup2(fd[1], 1);
+		env = env + 0;
 		ft_exec(env, argv, bin);
 		kill(getpid(), SIGKILL);
 	}
@@ -159,23 +154,25 @@ t_lex	*ft_pipe_it(t_lex *med, t_env *env)
 
 	swp = med;
 	fd = 0;
+	envp = ft_get_envp(env);
 	while (swp)
 	{
 		if (fd == 0)
 		{
-			ft_cre_exec_req(&bin, &argv, &envp, swp, env);
+			ft_cre_exec_req(&bin, &argv, swp);
 			fd = ft_pipe_pipes(bin, argv, envp);
-			ft_del_exec_req(&bin, &argv, &envp);
+			ft_del_exec_req(&bin, &argv);
 		}
 		else
 		{
-			ft_cre_exec_req(&bin, NULL, &envp, swp, env);
+			ft_cre_exec_req(&bin, NULL, swp);
 			ft_make_pipe_argv(swp, ft_get_end_of_pipe(fd));
 			close(fd);
 			fd = ft_pipe_pipes(bin, argv, envp);
-			ft_del_exec_req(&bin, &argv, &envp);
+			ft_del_exec_req(&bin, &argv);
 		}
 		swp = ft_get_next_op(swp);
 	}
+	ft_del_tab(envp);
 	return (swp);
 }

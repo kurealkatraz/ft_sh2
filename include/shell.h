@@ -15,6 +15,8 @@
 # define BUF_SIZE 42
 # define BUFF_SIZE 42
 
+#include <errno.h>
+
 # include "colors.h"
 # include "libft.h"
 # include <unistd.h>
@@ -25,6 +27,8 @@
 # include <time.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/uio.h>
 
 typedef struct		s_env
 {
@@ -200,6 +204,8 @@ t_env	*ft_cd(t_lex *med, t_env *env);
 /*
 **	ft_pipes.c
 */
+void	ft_cre_exec_req(char **b, char ***a, t_lex *m);
+void	ft_del_exec_req(char **bin, char ***argv);
 int		ft_pipe_pipes(char *bin, char **argv, char **env);
 char	**ft_make_pipe_argv(t_lex *med, t_lex *added);
 char	**ft_del_tab(char **argv);

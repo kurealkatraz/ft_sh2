@@ -20,9 +20,9 @@ int		error(char **holder)
 
 int   ft_get_file(const int fd, char **line)
 {
-  static char		*holder;
-  char			*buff;
-  ssize_t			r;
+  static char   *holder;
+  char          *buff;
+  ssize_t       r;
 
   if (fd < 0 || BUFF_SIZE > 1000000000 || !(line))
     return (error(&holder));
