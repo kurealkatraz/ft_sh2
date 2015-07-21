@@ -16,6 +16,29 @@
 ** WILL GO IN UTILITY.C
 */
 
+t_lex	*ft_print_lex(t_lex *med)
+{
+	t_lex	*swp;
+
+	swp = med;
+	while (swp != NULL)
+	{
+		ft_putendl(swp->mem);
+		swp = swp->next;
+	}
+	return (med);
+}
+
+char	**ft_print_tab(char **tab)
+{
+	int		ss;
+
+	ss = 0;
+	while (tab[ss])
+		ft_putendl(tab[ss++]);
+	return (tab);
+}
+
 void	ft_del_exec_req(char **bin, char ***argv, char ***envp)
 {
 	ft_strdel(bin);
@@ -47,23 +70,21 @@ char	**ft_make_pipe_argv(t_lex *med, t_lex *added)
 	int			len;
 	int			ss;
 
-	len = ft_is_what_len_pipe(med) + ft_is_what_len(added);
 	swp = med;
+	len = ft_is_what_len_pipe(med) + ft_is_what_len(added);
 	argv = (char**)malloc(sizeof(char*) * (len));
 	argv[len] = NULL;
 	ss = 0;
 	while (swp != NULL && swp->mem[0] != '|' && ss <= len)
 	{
-		argv[ss] = (char*)malloc(sizeof(char) * ft_strlen(swp->mem) + 1);
-		argv[ss] = ft_strcpy(argv[ss], swp->mem);
+		argv[ss] = ft_strdup(swp->mem);
 		argv[++ss] = NULL;
 		swp = swp->next;
 	}
 	swp = added;
 	while (swp != NULL && ss <= len)
 	{
-		argv[ss] = (char*)malloc(sizeof(char) * ft_strlen(swp->mem) + 1);
-		argv[ss] = ft_strcpy(argv[ss], swp->mem);
+		argv[ss] = ft_strdup(swp->mem);
 		argv[++ss] = NULL;
 		swp = swp->next;
 	}
@@ -83,7 +104,7 @@ char	**ft_del_tab(char **argv)
 		ft_strdel(&argv[ss]);
 		ss++;
 	}
-	return (NULL);
+	return (argv);
 }
 
 t_lex	*ft_get_end_of_pipe(int	fd)
@@ -93,9 +114,15 @@ t_lex	*ft_get_end_of_pipe(int	fd)
 
 	added = NULL;
 	while (1 == ft_get_file(fd, &line))
+	{
+		ft_putstr(line);
 		added = ft_new_meme(added, line);
+	}
 	added = ft_rev_lex(added);
 	close(fd);
+	ft_putendl("start fd print");
+	ft_print_lex(added);
+	ft_putendl("end fd print");
 	return (added);
 }
 
@@ -109,18 +136,17 @@ int		ft_pipe_pipes(char *bin, char **argv, char **env)
 	pipe(fd);
 	if (child == 0)
 	{
-		close(fd[1]);
+		close(fd[0]);
 		dup2(fd[1], 1);
 		ft_exec(env, argv, bin);
-		close(fd[0]);	//must check
 		kill(getpid(), SIGKILL);
 	}
 	else
 	{
 		wait(&sys);
-		close(fd[0]);
+		close(fd[1]);
 	}
-	return (fd[1]);
+	return (fd[0]);
 }
 
 t_lex	*ft_pipe_it(t_lex *med, t_env *env)
@@ -133,12 +159,13 @@ t_lex	*ft_pipe_it(t_lex *med, t_env *env)
 
 	swp = med;
 	fd = 0;
-	while (ft_is_next_op_pipe(ft_get_next_op(swp)))
+	while (swp)
 	{
 		if (fd == 0)
 		{
 			ft_cre_exec_req(&bin, &argv, &envp, swp, env);
 			fd = ft_pipe_pipes(bin, argv, envp);
+			ft_del_exec_req(&bin, &argv, &envp);
 		}
 		else
 		{
@@ -148,7 +175,7 @@ t_lex	*ft_pipe_it(t_lex *med, t_env *env)
 			fd = ft_pipe_pipes(bin, argv, envp);
 			ft_del_exec_req(&bin, &argv, &envp);
 		}
-		ft_get_next_op(swp);
+		swp = ft_get_next_op(swp);
 	}
 	return (swp);
 }

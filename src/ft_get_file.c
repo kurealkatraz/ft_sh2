@@ -12,19 +12,6 @@
 
 #include "shell.h"
 
-// char		*ft_strcdup(char *str, char c)
-// {
-//   char	*fresh;
-//   size_t	len;
-//
-//   len = 0;
-//   while (str[len] != c && str[len] != '\0')
-//     len++;
-//   fresh = ft_strndup(str, len);
-//   fresh[len] = '\0';
-//   return (fresh);
-// }
-
 int		error(char **holder)
 {
   *holder = NULL;
