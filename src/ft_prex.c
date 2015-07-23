@@ -403,7 +403,7 @@ t_env	*ft_parser(t_lex *med, t_env *env)
 				return (env);
 		}
 		else if (ft_is_next_op_pipe(swp))
-			ft_pipe_it(swp, env);
+			swp = ft_pipe_it(swp, env, -2);
 		else if (ft_is_buildtin(swp->mem))
 			env = ft_what_buildtin(swp, env);
 		else if (ft_get_del_env("PATH", env) == NULL)

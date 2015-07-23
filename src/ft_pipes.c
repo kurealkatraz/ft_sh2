@@ -29,66 +29,6 @@ t_lex	*ft_print_lex(t_lex *med)
 	return (med);
 }
 
-char	**ft_print_tab(char **tab)
-{
-	int		ss;
-
-	ss = 0;
-	while (tab[ss])
-		ft_putendl(tab[ss++]);
-	return (tab);
-}
-
-void	ft_del_exec_req(char **bin, char ***argv)
-{
-	ft_strdel(bin);
-	ft_del_tab(*argv);
-}
-
-void	ft_cre_exec_req(char **b, char ***a, t_lex *m)
-{
-	t_lex	*swp;
-
-	swp = m;
-	if (b)
-		*b = ft_make_bin(swp);
-	if (a)
-		*a = ft_make_argv(swp);
-}
-
-/*
-**	WILL GO IN UTILITY.C
-*/
-
-char	**ft_make_pipe_argv(t_lex *med, t_lex *added)
-{
-	char		**argv;
-	t_lex		*swp;
-	int			len;
-	int			ss;
-
-	swp = med;
-	len = ft_is_what_len_pipe(med) + ft_is_what_len(added);
-	argv = (char**)malloc(sizeof(char*) * (len));
-	argv[len] = NULL;
-	ss = 0;
-	while (swp != NULL && swp->mem[0] != '|' && ss <= len)
-	{
-		argv[ss] = ft_strdup(swp->mem);
-		argv[++ss] = NULL;
-		swp = swp->next;
-	}
-	swp = added;
-	while (swp != NULL && ss <= len)
-	{
-		argv[ss] = ft_strdup(swp->mem);
-		argv[++ss] = NULL;
-		swp = swp->next;
-	}
-	ft_free_lex(added);
-	return (argv);
-}
-
 char	**ft_del_tab(char **argv)
 {
 	int		ss;
@@ -120,20 +60,72 @@ t_lex	*ft_get_end_of_pipe(int	fd)
 	return (added);
 }
 
-int		ft_pipe_pipes(char *bin, char **argv, char **env)
+char	**ft_print_raw_tab_fd(char **tab, int fd)
+{
+	int		ss;
+
+	ss = 0;
+	while (tab[ss])
+		ft_putstr_fd(tab[ss++], fd);
+	return (tab);
+}
+
+char	**ft_print_tab(char **tab)
+{
+	int		ss;
+
+	ss = 0;
+	while (tab[ss])
+		ft_putendl(tab[ss++]);
+	return (tab);
+}
+
+/*
+**	WILL GO IN UTILITY.C
+*/
+
+t_lex	*ft_get_added(int fd, t_lex *added)
+{
+	char	*line;
+
+	while (ft_get_file(fd, &line) > 0)
+		added = ft_new_meme(added, line);
+	return (added = ft_rev_lex(added));
+}
+
+char	**ft_make_read(int fd)
+{
+	t_lex		*added;
+	char		**tab;
+	int			len;
+
+	added = NULL;
+	len = ft_is_what_len(added = ft_get_added(fd, added));
+ 	tab = (char**)malloc(sizeof(char*) * (len));
+ 	tab[len + 1] = NULL;
+ 	len = 0;
+ 	while (added)
+ 	{
+ 		tab[len++] = ft_strdup(added->mem);
+ 		tab[len] = NULL;
+ 		added = added->next;
+ 	}
+ 	return (tab);
+}
+
+int			ft_start_pipe(char **argv, char **envp, char *bin)
 {
 	int		fd[2];
 	int		sys;
 	pid_t	child;
 
-	child = fork();
 	pipe(fd);
-	if (child == 0)
+	child = fork();
+	if (!child)
 	{
 		close(fd[0]);
 		dup2(fd[1], 1);
-		env = env + 0;
-		ft_exec(env, argv, bin);
+		execve(bin, argv, envp);
 		kill(getpid(), SIGKILL);
 	}
 	else
@@ -141,38 +133,74 @@ int		ft_pipe_pipes(char *bin, char **argv, char **env)
 		wait(&sys);
 		close(fd[1]);
 	}
+	ft_strdel(&bin);
 	return (fd[0]);
 }
 
-t_lex	*ft_pipe_it(t_lex *med, t_env *env)
+int			ft_rec_pipe(char **argv, char **envp, char *bin, int src)
 {
+	int		fd[2];
+	int		sys;
+	pid_t	child;
+
+	pipe(fd);
+	child = fork();
+	if (child == 0)
+	{
+		close(fd[0]);
+		dup2(fd[1], 1);
+		dup2(src, 0);
+		execve(bin, argv, envp);
+		close(src);
+		kill(getpid(), SIGKILL);
+	}
+	else
+	{
+		wait(&sys);
+		close(fd[1]);
+	}
+	ft_strdel(&bin);
+	return (fd[0]);
+}
+
+int		ft_end_pipe(char **argv, char **envp, char *bin, int src)
+{
+	int		sys;
+	pid_t	child;
+
+	child = fork();
+	if (child == 0)
+	{
+		dup2(src, 0);
+		execve(bin, argv, envp);
+		close(src);
+		kill(getpid(), SIGKILL);
+	}
+	else
+		wait(&sys);
+	ft_strdel(&bin);
+	return (-2);
+}
+
+t_lex		*ft_pipe_it(t_lex *med, t_env *env, int fd)
+{
+	t_lex	*swp;
 	char	**envp;
 	char	**argv;
-	char	*bin;
-	t_lex	*swp;
-	int		fd;
 
 	swp = med;
-	fd = 0;
+	envp = NULL;
 	envp = ft_get_envp(env);
-	while (swp)
-	{
-		if (fd == 0)
-		{
-			ft_cre_exec_req(&bin, &argv, swp);
-			fd = ft_pipe_pipes(bin, argv, envp);
-			ft_del_exec_req(&bin, &argv);
-		}
-		else
-		{
-			ft_cre_exec_req(&bin, NULL, swp);
-			ft_make_pipe_argv(swp, ft_get_end_of_pipe(fd));
-			close(fd);
-			fd = ft_pipe_pipes(bin, argv, envp);
-			ft_del_exec_req(&bin, &argv);
-		}
-		swp = ft_get_next_op(swp);
-	}
+	argv = ft_make_argv(swp);
+	if (fd < 2)
+		fd = ft_start_pipe(argv, envp, ft_make_bin(swp));
+	else if (ft_is_next_op_pipe(swp))
+		fd = ft_rec_pipe(argv, envp, ft_make_bin(swp), fd);
+	else
+		fd = ft_end_pipe(argv, envp, ft_make_bin(swp), fd);
+	ft_del_tab(argv);
 	ft_del_tab(envp);
+	if (ft_is_next_op_pipe(swp))
+		swp = ft_pipe_it(ft_get_next_op(swp), env, fd);
 	return (swp);
 }
