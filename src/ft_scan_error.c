@@ -40,7 +40,8 @@ void	ft_scann_eror(int err_index, char *erro)
 		ft_putendl("\" : Another Op Sign after Op Sign");
 	}
 	else if (err_index == 004)
-		ft_putendl("ERROR : \"PATH is Unset. Breaking all operations");
+		ft_putendl("ERROR : \"PATH\" is Unset. Or not correctly managed.\
+		Breaking all operations");
 	else if (err_index == 005)
 	{
 		ft_putstr("ERROR : \"");

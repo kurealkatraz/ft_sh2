@@ -3,6 +3,6 @@ env -i launch (seems ok)
 CD - Unsets debugs (seems ok)
 Termcaps
 Check SHlvls (Seems ok)
-pipes
+pipes (seems ok)
 heredocs
 inputs

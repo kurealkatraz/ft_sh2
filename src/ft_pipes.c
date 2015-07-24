@@ -119,6 +119,8 @@ int			ft_start_pipe(char **argv, char **envp, char *bin)
 	int		sys;
 	pid_t	child;
 
+	if (bin == NULL)
+		ft_scann_eror(04, NULL);
 	pipe(fd);
 	child = fork();
 	if (!child)
@@ -143,6 +145,8 @@ int			ft_rec_pipe(char **argv, char **envp, char *bin, int src)
 	int		sys;
 	pid_t	child;
 
+	if (bin == NULL)
+		ft_scann_eror(04, NULL);
 	pipe(fd);
 	child = fork();
 	if (child == 0)
@@ -168,6 +172,8 @@ int		ft_end_pipe(char **argv, char **envp, char *bin, int src)
 	int		sys;
 	pid_t	child;
 
+	if (bin == NULL)
+		ft_scann_eror(04, NULL);
 	child = fork();
 	if (child == 0)
 	{

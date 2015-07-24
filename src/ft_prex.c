@@ -34,6 +34,8 @@ char	*ft_make_bin(t_lex *med)
 	str = NULL;
 	if (ft_ispath(med->mem))
 		return (ft_return_path_bin(med->mem));
+	if (!med->path)
+		return (NULL);
 	str = (char*)malloc(sizeof(char) * (ft_strlen(med->mem)
 		+ ft_strlen(med->path) + 1));
 	ft_strcpy(str, med->path);
