@@ -306,36 +306,68 @@ t_env	*ft_what_buildtin(t_lex *med, t_env *env)
 	return (env);
 }
 
-void	ft_left_s_redi(t_lex *med, t_env *env)
+void	ft_cre_exec(char **bin, char ***argv, t_lex *med)
+{
+	t_lex		*swp;
+
+	swp = med;
+	if (bin)
+		*bin = ft_make_bin(swp);
+	if (argv)
+		*argv = ft_make_argv(swp);
+}
+
+t_lex	*ft_get_fd_s_redi(t_lex *med)
 {
 	t_lex	*swp;
-	int		sys;
-	pid_t	child;
-	int		fd;
+
+	swp = med;
+	while (swp && swp->mem[0] != '<' && swp->mem[1] != '\0')
+		swp = swp->next;
+	return (swp->next);
+}
+
+void	ft_prex_errors(char *erstr, int erono)
+{
+	ft_putstr(C_RED);
+	if (erono == 001)
+	{
+		ft_putstr("ERROR : \"");
+		ft_putstr(C_CYAN);
+		ft_putstr(erstr);
+		ft_putstr(C_RED);
+		ft_putendl("\" : is not Valid");
+	}
+	ft_putstr(C_NONE);
+}
+
+void	ft_left_s_redi(t_lex *med, t_env *env)
+{
+	char		**argv;
+	char		**envp;
+	char		*bin;
+	pid_t		child;
+	int			fd;
+	int			sys;
 
 	child = fork();
+	fd = 0;
 	if (child == 0)
 	{
-		swp = med;
-		while (ft_strcmp("<",swp->mem) != 0)
-			swp = swp->next;
-		if (access(swp->next->mem, F_OK) == -1)
-		{
-			ft_putstr(C_RED);
-			ft_putstr("no such file or directory ");
-			ft_putstr(C_CYAN);
-			ft_putendl(swp->next->mem);
-			ft_putstr(C_NONE);
-			kill(getpid(), SIGKILL);
-		}
-		swp = swp->next;
-		fd = open(swp->mem, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		dup2(1, fd);
-		ft_exec(ft_get_envp(env), ft_make_argv(med), ft_make_bin(med));
-		close(fd);
+		ft_cre_exec(&bin, &argv, med);
+		envp = ft_get_envp(env);
+		fd = open(ft_get_fd_s_redi(med)->mem, O_RDONLY);
+		dup2(fd, 0);
+		if (fd != -1)
+			execve(bin, argv, envp);
+		else
+			ft_prex_errors(ft_get_fd_s_redi(med)->mem, 001);
 		kill(getpid(), SIGKILL);
 	}
-	wait(&sys);
+	else
+	{
+		wait(&sys);
+	}
 }
 
 void	ft_left_d_redi(t_lex *med, t_env *env)
