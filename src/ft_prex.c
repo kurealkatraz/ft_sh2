@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/07 18:49:25 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/17 14:16:33 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/04 18:51:02 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -368,38 +368,6 @@ void	ft_left_s_redi(t_lex *med, t_env *env)
 	{
 		wait(&sys);
 	}
-}
-
-void	ft_left_d_redi(t_lex *med, t_env *env)
-{
-	t_lex	*swp;
-	int		sys;
-	pid_t	child;
-	char	*str;
-	t_lex	*here_holder;
-
-	child = fork();
-	str = NULL;
-	here_holder = NULL;
-	env = env + 0;
-	sys = 0;
-	sys = sys + 0;
-	if (child == 0)
-	{
-		swp = med;
-		while (ft_strcmp("<<", swp->mem) != 0)
-			swp = swp->next;
-		swp = swp ->next;
-		while (ft_strcmp(str, swp->mem) != 0)
-		{
-			if (ft_get_next_line(1, &str) == 1)
-				here_holder = ft_new_meme(here_holder, str);
-		}
-		here_holder = ft_rev_lex(here_holder);
-		ft_free_lex(here_holder);
-	}
-	else
-		wait(&sys);
 }
 
 t_lex	*ft_check_if_more(t_lex *med)
