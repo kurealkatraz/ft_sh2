@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/07 18:49:25 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/05 09:38:57 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/05 09:43:26 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void	ft_exec(char **envp, char **argv, char *bin)
 	}
 	else
 		wait(&sys);
+	ft_del_exec(&bin, &argv, &envp);
 }
 
 char	*ft_get_redi_dir(t_lex *med)
@@ -318,7 +319,7 @@ char	**ft_cre_exec(char **bin, char ***argv, t_lex *med, t_env *env)
 	return (ft_get_envp(env));
 }
 
-void	ft_del_execve(char **bin, char ***argv, char ***envp)
+void	ft_del_exec(char **bin, char ***argv, char ***envp)
 {
 	if (bin)
 		ft_strdel(bin);
@@ -369,7 +370,7 @@ void	ft_left_s_redi(t_lex *med, t_env *env)
 		if (fd != -1 && dup2(fd, 0) != -1)
 		{
 			execve(bin, argv, envp);
-			ft_del_execve(&bin, &argv, &envp);
+			ft_del_exec(&bin, &argv, &envp);
 		}
 		else
 			ft_prex_errors(ft_get_fd_s_redi(med)->mem, 001);

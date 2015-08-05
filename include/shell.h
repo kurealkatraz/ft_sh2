@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:29:11 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/05 09:34:52 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/05 09:42:59 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ t_lex	*ft_next_op(t_lex *med);
 void	ft_exec(char **envp, char **argv, char *bin);
 t_env	*ft_parser(t_lex *med, t_env *env);
 t_env	*ft_muzukashi(t_lex *med, t_env *env);
+void	ft_del_exec(char **bin, char ***argv, char ***envp);
+char	**ft_cre_exec(char **bin, char ***argv, t_lex *med, t_env *env);
 
 /*
 **	ft_path_macker.c
