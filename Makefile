@@ -6,7 +6,7 @@
 #    By: mgras <mgras@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/03/31 15:31:03 by mgras             #+#    #+#              #
-#    Updated: 2015/04/08 15:25:32 by mgras            ###   ########.fr        #
+#    Updated: 2015/08/05 10:14:42 by mgras            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC_NAME =	ft_chldabs.c \
 			ft_cd.c \
 			ft_pipes.c \
 			ft_get_file.c \
+			ft_heredocs.c \
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 

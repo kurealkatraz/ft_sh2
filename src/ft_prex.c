@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/07 18:49:25 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/05 09:43:26 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/05 11:14:06 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -409,8 +409,8 @@ t_env	*ft_parser(t_lex *med, t_env *env)
 				ft_right_d_redi(swp, env);
 			else if (ft_strcmp("<", ft_get_redi(swp)) == 0)
 				ft_left_s_redi(swp, env);
-			//else if (ft_strcmp("<<", ft_get_redi(swp)) == 0)
-				//ft_left_d_redi(med, swp, env);
+			else if (ft_strcmp("<<", ft_get_redi(swp)) == 0)
+				ft_left_d_redi(med, swp, env);
 			else
 				return (env);
 		}

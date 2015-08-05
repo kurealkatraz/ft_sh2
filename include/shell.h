@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:29:11 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/05 09:42:59 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/05 12:05:49 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ t_env   *ft_setenv(t_lex *med, t_env *env);
 t_lex	*ft_get_next_op(t_lex *med);
 char	*ft_make_bin(t_lex *med);
 char	**ft_get_envp(t_env *env);
+void	ft_mkfile(char *filename);
 char	**ft_make_argv(t_lex *med);
 t_lex	*ft_next_op(t_lex *med);
 void	ft_exec(char **envp, char **argv, char *bin);
@@ -211,5 +212,10 @@ char	**ft_del_tab(char **argv);
 t_lex	*ft_print_lex(t_lex *med);
 t_lex	*ft_get_end_of_pipe(int	fd);
 char	**ft_print_raw_tab_fd(char **tab, int fd);
+
+/*
+**	ft_heredocs.c
+*/
+void	ft_left_d_redi(t_lex *med, t_lex *curr, t_env *env);
 
 #endif
