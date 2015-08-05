@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:29:11 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/17 17:44:48 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/05 09:34:52 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,8 +204,10 @@ t_env	*ft_cd(t_lex *med, t_env *env);
 /*
 **	ft_pipes.c
 */
-void	ft_cre_exec_req(char **b, char ***a, t_lex *m);
-void	ft_del_exec_req(char **bin, char ***argv);
 t_lex	*ft_pipe_it(t_lex *med, t_env *env, int fd);
+char	**ft_del_tab(char **argv);
+t_lex	*ft_print_lex(t_lex *med);
+t_lex	*ft_get_end_of_pipe(int	fd);
+char	**ft_print_raw_tab_fd(char **tab, int fd);
 
 #endif

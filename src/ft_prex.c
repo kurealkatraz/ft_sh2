@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/07 18:49:25 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/04 18:51:02 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/05 09:38:57 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,7 +306,7 @@ t_env	*ft_what_buildtin(t_lex *med, t_env *env)
 	return (env);
 }
 
-void	ft_cre_exec(char **bin, char ***argv, t_lex *med)
+char	**ft_cre_exec(char **bin, char ***argv, t_lex *med, t_env *env)
 {
 	t_lex		*swp;
 
@@ -315,6 +315,17 @@ void	ft_cre_exec(char **bin, char ***argv, t_lex *med)
 		*bin = ft_make_bin(swp);
 	if (argv)
 		*argv = ft_make_argv(swp);
+	return (ft_get_envp(env));
+}
+
+void	ft_del_execve(char **bin, char ***argv, char ***envp)
+{
+	if (bin)
+		ft_strdel(bin);
+	if (argv)
+		ft_del_tab(*argv);
+	if (envp)
+		ft_del_tab(*envp);
 }
 
 t_lex	*ft_get_fd_s_redi(t_lex *med)
@@ -348,26 +359,24 @@ void	ft_left_s_redi(t_lex *med, t_env *env)
 	char		*bin;
 	pid_t		child;
 	int			fd;
-	int			sys;
 
 	child = fork();
 	fd = 0;
 	if (child == 0)
 	{
-		ft_cre_exec(&bin, &argv, med);
-		envp = ft_get_envp(env);
+		envp = ft_cre_exec(&bin, &argv, med, env);
 		fd = open(ft_get_fd_s_redi(med)->mem, O_RDONLY);
-		dup2(fd, 0);
-		if (fd != -1)
+		if (fd != -1 && dup2(fd, 0) != -1)
+		{
 			execve(bin, argv, envp);
+			ft_del_execve(&bin, &argv, &envp);
+		}
 		else
 			ft_prex_errors(ft_get_fd_s_redi(med)->mem, 001);
 		kill(getpid(), SIGKILL);
 	}
 	else
-	{
-		wait(&sys);
-	}
+		wait(&fd);
 }
 
 t_lex	*ft_check_if_more(t_lex *med)
@@ -399,8 +408,8 @@ t_env	*ft_parser(t_lex *med, t_env *env)
 				ft_right_d_redi(swp, env);
 			else if (ft_strcmp("<", ft_get_redi(swp)) == 0)
 				ft_left_s_redi(swp, env);
-			else if (ft_strcmp("<<", ft_get_redi(swp)) == 0)
-				ft_left_d_redi(swp, env);
+			//else if (ft_strcmp("<<", ft_get_redi(swp)) == 0)
+				//ft_left_d_redi(med, swp, env);
 			else
 				return (env);
 		}
