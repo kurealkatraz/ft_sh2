@@ -6,17 +6,64 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/31 17:44:58 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/17 17:46:35 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/09 10:29:34 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
+int		ft_get_proper_len(char *line, int ts, int ss)
+{
+	int		len;
+
+	len = 0;
+	while (line[ts] && line[ts] != ';' && ts <= ss)
+	{
+		ts++;
+		len++;
+	}
+	return (len);
+}
+
+char	*ft_split_line(char *line, int *ss, int len, int ts)
+{
+	int		inBraces;
+	int		inminBra;
+	int		get_out;
+
+	get_out = 0;
+	inBraces = -1;
+	inminBra = -1;
+	while (line[*ss] && !get_out)
+	{
+		if (line[*ss] == ';' && inBraces == -1 && inminBra == -1)
+			get_out = 1;
+		else if (line[*ss] == '\"')
+			inBraces = -inBraces;
+		else if (line[*ss] == '\'')
+			inminBra = -inminBra;
+		*ss = *ss + 1;
+	}
+	len = ft_get_proper_len(line , ts, *ss);
+	return (ft_clean_str(ft_strsub(line, ts, len)));
+}
+
 t_env	*ft_core(char *line, t_env *env, int *ext)
 {
+	char	*send;
+	int		*ss;
+
 	line = ft_clean_str(line);
-	env = ft_child_molesting(line, env, ext);
+	ss = (int*)malloc(sizeof(int) * 1);
+	*ss = 0;
+	while (line[*ss])
+	{
+		send = ft_split_line(line, ss, 0, *ss);
+		env = ft_child_molesting(send, env, ext);
+		ft_strdel(&send);
+	}
 	free(line);
+	free(ss);
 	return (env);
 }
 
