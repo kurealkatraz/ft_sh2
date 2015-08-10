@@ -6,7 +6,7 @@
 #    By: mgras <mgras@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/03/31 15:31:03 by mgras             #+#    #+#              #
-#    Updated: 2015/08/05 10:14:42 by mgras            ###   ########.fr        #
+#    Updated: 2015/08/10 23:35:33 by mgras            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,17 @@ SRC_PATH = ./src/
 
 SRC_NAME =	ft_chldabs.c \
 			ft_cleaner.c \
+			ft_cleaner_one.c \
 			ft_color.c \
 			ft_core.c \
+			ft_core_one.c \
 			ft_env.c \
+			ft_env_one.c \
+			ft_env_two.c \
+			ft_env_three.c \
 			ft_get_next_line.c \
 			ft_lexseur.c \
+			ft_lexseur_one.c \
 			ft_lex_mcr.c \
 			ft_correction_center.c \
 			ft_scan_error.c \
