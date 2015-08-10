@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/04 16:04:36 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/12 17:26:51 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/10 18:10:38 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ int		ft_is_buildtin(char *str)
 {
 	if (ft_strcmp(str, "env") == 0)
 		return (1);
-	else if(ft_strcmp(str, "setenv") == 0)
+	else if (ft_strcmp(str, "setenv") == 0)
 		return (1);
-	else if(ft_strcmp(str, "unsetenv") == 0)
+	else if (ft_strcmp(str, "unsetenv") == 0)
 		return (1);
-	else if(ft_strcmp(str, "cd") == 0)
+	else if (ft_strcmp(str, "cd") == 0)
 		return (1);
 	return (0);
 }
@@ -84,8 +84,8 @@ int		ft_isenvmem(char *str)
 	while (str[pos])
 	{
 		if (str[pos] == '=')
-		return (1);
-		pos ++;
+			return (1);
+		pos++;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/31 17:44:58 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/09 10:29:34 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/10 17:33:02 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,24 @@ int		ft_get_proper_len(char *line, int ts, int ss)
 
 char	*ft_split_line(char *line, int *ss, int len, int ts)
 {
-	int		inBraces;
-	int		inminBra;
+	int		inbraces;
+	int		inminbra;
 	int		get_out;
 
 	get_out = 0;
-	inBraces = -1;
-	inminBra = -1;
+	inbraces = -1;
+	inminbra = -1;
 	while (line[*ss] && !get_out)
 	{
-		if (line[*ss] == ';' && inBraces == -1 && inminBra == -1)
+		if (line[*ss] == ';' && inbraces == -1 && inminbra == -1)
 			get_out = 1;
 		else if (line[*ss] == '\"')
-			inBraces = -inBraces;
+			inbraces = -inbraces;
 		else if (line[*ss] == '\'')
-			inminBra = -inminBra;
+			inminbra = -inminbra;
 		*ss = *ss + 1;
 	}
-	len = ft_get_proper_len(line , ts, *ss);
+	len = ft_get_proper_len(line, ts, *ss);
 	return (ft_clean_str(ft_strsub(line, ts, len)));
 }
 

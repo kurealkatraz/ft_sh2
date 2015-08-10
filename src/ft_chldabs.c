@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/31 18:05:14 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/17 18:23:30 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/10 17:28:32 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ t_lex	*ft_asign_path(t_pth *pth, t_lex *med)
 	mwp = med;
 	while (mwp != NULL)
 	{
-		if (!ft_ispath(mwp->mem) && !ft_isenvmem(mwp->mem) && !(ft_isalien(mwp->mem[0])))
+		if (!ft_ispath(mwp->mem) && !ft_isenvmem(mwp->mem)\
+		&& !(ft_isalien(mwp->mem[0])))
 			mwp = ft_get_bin(mwp, pth);
 		else
 			mwp->path = NULL;

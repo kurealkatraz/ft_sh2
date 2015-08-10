@@ -6,15 +6,11 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 18:26:15 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/04 18:23:17 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/10 18:15:27 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-/*
-** WILL GO IN UTILITY.C
-*/
 
 t_lex	*ft_print_lex(t_lex *med)
 {
@@ -44,7 +40,7 @@ char	**ft_del_tab(char **argv)
 	return (argv);
 }
 
-t_lex	*ft_get_end_of_pipe(int	fd)
+t_lex	*ft_get_end_of_pipe(int fd)
 {
 	char	*line;
 	t_lex	*added;
@@ -80,10 +76,6 @@ char	**ft_print_tab(char **tab)
 	return (tab);
 }
 
-/*
-**	WILL GO IN UTILITY.C
-*/
-
 t_lex	*ft_get_added(int fd, t_lex *added)
 {
 	char	*line;
@@ -100,20 +92,21 @@ char	**ft_make_read(int fd)
 	int			len;
 
 	added = NULL;
-	len = ft_is_what_len(added = ft_get_added(fd, added));
- 	tab = (char**)malloc(sizeof(char*) * (len));
- 	tab[len + 1] = NULL;
- 	len = 0;
- 	while (added)
- 	{
- 		tab[len++] = ft_strdup(added->mem);
- 		tab[len] = NULL;
- 		added = added->next;
- 	}
- 	return (tab);
+	added = ft_get_added(fd, added);
+	len = ft_is_what_len(added);
+	tab = (char**)malloc(sizeof(char*) * (len));
+	tab[len + 1] = NULL;
+	len = 0;
+	while (added)
+	{
+		tab[len++] = ft_strdup(added->mem);
+		tab[len] = NULL;
+		added = added->next;
+	}
+	return (tab);
 }
 
-int			ft_start_pipe(char **argv, char **envp, char *bin)
+int		ft_start_pipe(char **argv, char **envp, char *bin)
 {
 	int		fd[2];
 	int		sys;

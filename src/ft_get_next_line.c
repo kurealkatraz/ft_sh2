@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/12 16:42:56 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/02 15:26:24 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/10 18:03:54 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_fill_holder(int fd)
 		tmp = ft_strjoin(tmp, buf);
 		if (buf[r - 1] == '\n')
 		{
-			free (buf);
+			free(buf);
 			return (tmp);
 		}
 	}

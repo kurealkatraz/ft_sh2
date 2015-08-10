@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/29 16:38:24 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/29 16:39:20 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/10 17:27:06 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ t_env	*ft_cd_prev(t_lex *med, t_env *env)
 	char	*join;
 
 	join = NULL;
-	if ((ft_get_del_env("OLDPWD", env)) && (chdir(ft_get_del_env("OLDPWD", env)->value) != 0))
+	if ((ft_get_del_env("OLDPWD", env)) &&\
+	(chdir(ft_get_del_env("OLDPWD", env)->value) != 0))
 	{
 		ft_uscderror(med->mem, 001);
 		return (env);

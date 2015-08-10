@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:29:11 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/05 12:05:49 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/10 17:51:17 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int		ft_lex_env(t_lex *med);
 int		ft_env_noexec(t_lex *med);
 t_lex	*ft_del_lex_mem(t_lex *prev, t_lex *curr);
 void	ft_commit_env_changes(t_lex *med, int nb);
-int		ft_parse_env(t_lex *med);
+int		ft_parse_env(t_lex *med, int change, int index);
 t_env	*ft_env(t_lex *med, t_env *env);
 t_env	*ft_new_env(t_env *env, char *full);
 t_env	*ft_get_env(t_env *env, char **envp);

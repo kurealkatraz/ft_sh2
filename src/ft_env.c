@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/31 17:50:49 by mgras             #+#    #+#             */
-/*   Updated: 2015/03/31 17:51:11 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/10 17:51:46 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	ft_print_env_usr(t_env *env, t_lex *med)
 
 	swp = ft_make_usr_env(env, med);
 	ft_print_env(swp);
-	swp = ft_free_usr_env(swp, med);	//!\ BETTER WATCH OUT M9
+	swp = ft_free_usr_env(swp, med);
 }
 
 int		ft_lex_env(t_lex *med)
@@ -160,15 +160,24 @@ void	ft_commit_env_changes(t_lex *med, int nb)
 	ft_putstr(C_NONE);
 }
 
-int		ft_parse_env(t_lex *med)
+int		ft_ret_parse_env(int change, t_lex *med)
+{
+	if (change > 0)
+		ft_commit_env_changes(med, change);
+	if (med->next == NULL)
+		return (2);
+	else if (ft_env_noexec(med))
+		return (1);
+	else if (!ft_env_noexec(med))
+		return (3);
+	return (0);
+}
+
+int		ft_parse_env(t_lex *med, int change, int index)
 {
 	t_lex	*mwp;
 	t_lex	*save;
-	int		change;
-	int		index;
 
-	change = 0;
-	index = 0;
 	mwp = med->next;
 	save = med;
 	while (mwp != NULL && !ft_iscompl(mwp->mem[0]))
@@ -190,15 +199,7 @@ int		ft_parse_env(t_lex *med)
 			mwp = mwp->next;
 		}
 	}
-	if (change > 0)
-		ft_commit_env_changes(med, change);
-	if (med->next == NULL)
-		return (2);
-	else if (ft_env_noexec(med))
-		return (1);
-	else if (!ft_env_noexec(med))
-		return (3);
-	return (0);
+	return (ft_ret_parse_env(change, med));
 }
 
 t_lex	*ft_get_exec(t_lex *med)
@@ -224,30 +225,27 @@ t_env	*ft_env(t_lex *med, t_env *env)
 
 	swp = med;
 	ewp = env;
-	pars = 0;
 	if (swp->next)
 		if (ft_strcmp(swp->next->mem, "-i") == 0)
 		{
 			ft_del_lex_mem(med, med->next);
-			ft_env(med, NULL);
-			return (env);
+			return (ft_env(med, NULL));
 		}
-	pars = ft_parse_env(swp);
+	pars = ft_parse_env(swp, 0, 0);
 	if (pars == 1)
 		ft_print_env_usr(env, med);
 	else if (pars == 2)
 		ft_print_env(env);
 	else if (pars == 3)
-	{
-		ewp = ft_make_usr_env(ewp, med);
-		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));	//must do path compability
-	}
+		ft_exec(ft_get_envp(ewp = ft_make_usr_env(ewp, med)),\
+		ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));
 	else
-		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)), ft_make_bin(ft_get_exec(med)));	//must do path compability
+		ft_exec(ft_get_envp(ewp), ft_make_argv(ft_get_exec(med)),\
+		ft_make_bin(ft_get_exec(med)));
 	return (env);
 }
 
-t_env	*ft_free_one_env(t_env	*env)
+t_env	*ft_free_one_env(t_env *env)
 {
 	t_env	*swp;
 

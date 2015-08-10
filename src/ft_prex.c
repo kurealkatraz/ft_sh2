@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/07 18:49:25 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/05 11:14:06 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/10 19:23:45 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,12 @@ char	*ft_make_bin(t_lex *med)
 	return (str);
 }
 
-char	**ft_get_envp(t_env *env)
+char	**ft_envp_dup(t_env *env, int i)
 {
 	char	**envp;
 	t_env	*swap;
-	int		i;
 	int		len;
 
-	swap = env;
-	i = 0;
-	if (swap == NULL)
-		return (NULL);
-	while ((swap = swap->next) != NULL)
-		i++;
 	envp = (char**)malloc(sizeof(char*) * (i + 1));
 	envp[i + 1] = NULL;
 	swap = env;
@@ -72,6 +65,22 @@ char	**ft_get_envp(t_env *env)
 		envp[i] = NULL;
 		swap = swap->next;
 	}
+	return (envp);
+}
+
+char	**ft_get_envp(t_env *env)
+{
+	char	**envp;
+	t_env	*swap;
+	int		i;
+
+	swap = env;
+	i = 0;
+	if (swap == NULL)
+		return (NULL);
+	while ((swap = swap->next) != NULL)
+		i++;
+	envp = ft_envp_dup(env, i);
 	return (envp);
 }
 
@@ -177,6 +186,7 @@ void	ft_mkfile(char *filename)
 	}
 	wait(&sys);
 }
+
 void	ft_delfile(char *filename)
 {
 	pid_t	child;
@@ -201,6 +211,14 @@ void	ft_delfile(char *filename)
 	wait(&sys);
 }
 
+int		ft_reboot_file(int fd, t_lex *med)
+{
+	close(fd);
+	ft_delfile(ft_get_redi_dir(med));
+	ft_mkfile(ft_get_redi_dir(med));
+	return (open(ft_get_redi_dir(med), O_RDWR));
+}
+
 void	ft_right_s_redi(t_lex *med, t_env *env)
 {
 	pid_t	child;
@@ -220,12 +238,7 @@ void	ft_right_s_redi(t_lex *med, t_env *env)
 			}
 		}
 		else
-		{
-			close (fd);
-			ft_delfile(ft_get_redi_dir(med));
-			ft_mkfile(ft_get_redi_dir(med));
-			fd = open(ft_get_redi_dir(med), O_RDWR);
-		}
+			ft_reboot_file(fd, med);
 		dup2(fd, 1);
 		ft_exec(ft_get_envp(env), ft_make_argv(med), ft_make_bin(med));
 		close(fd);
@@ -298,11 +311,11 @@ t_env	*ft_what_buildtin(t_lex *med, t_env *env)
 {
 	if (ft_strcmp(med->mem, "env") == 0)
 		env = ft_env(med, env);
-	else if(ft_strcmp(med->mem, "setenv") == 0)
+	else if (ft_strcmp(med->mem, "setenv") == 0)
 		env = ft_setenv(med, env);
-	else if(ft_strcmp(med->mem, "unsetenv") == 0)
+	else if (ft_strcmp(med->mem, "unsetenv") == 0)
 		env = ft_unsetenv(med, env);
-	else if(ft_strcmp(med->mem, "cd") == 0)
+	else if (ft_strcmp(med->mem, "cd") == 0)
 		env = ft_cd(med, env);
 	return (env);
 }
@@ -394,6 +407,21 @@ t_lex	*ft_check_if_more(t_lex *med)
 	return (NULL);
 }
 
+t_env	*ft_parser_split(t_lex *med, t_lex *swp, t_env *env)
+{
+	if (ft_strcmp(">", ft_get_redi(swp)) == 0)
+		ft_right_s_redi(swp, env);
+	else if (ft_strcmp(">>", ft_get_redi(swp)) == 0)
+		ft_right_d_redi(swp, env);
+	else if (ft_strcmp("<", ft_get_redi(swp)) == 0)
+		ft_left_s_redi(swp, env);
+	else if (ft_strcmp("<<", ft_get_redi(swp)) == 0)
+		ft_left_d_redi(med, swp, env);
+	else
+		return (env);
+	return (env);
+}
+
 t_env	*ft_parser(t_lex *med, t_env *env)
 {
 	t_lex	*swp;
@@ -402,18 +430,7 @@ t_env	*ft_parser(t_lex *med, t_env *env)
 	while (swp != NULL)
 	{
 		if (ft_is_op_redi(swp))
-		{
-			if (ft_strcmp(">", ft_get_redi(swp)) == 0)
-				ft_right_s_redi(swp, env);
-			else if (ft_strcmp(">>", ft_get_redi(swp)) == 0)
-				ft_right_d_redi(swp, env);
-			else if (ft_strcmp("<", ft_get_redi(swp)) == 0)
-				ft_left_s_redi(swp, env);
-			else if (ft_strcmp("<<", ft_get_redi(swp)) == 0)
-				ft_left_d_redi(med, swp, env);
-			else
-				return (env);
-		}
+			ft_parser_split(med, swp, env);
 		else if (ft_is_next_op_pipe(swp))
 			swp = ft_pipe_it(swp, env, -2);
 		else if (ft_is_buildtin(swp->mem))

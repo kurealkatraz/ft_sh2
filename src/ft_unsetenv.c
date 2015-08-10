@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/29 16:45:23 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/29 16:45:25 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/10 19:34:16 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_lex	*ft_check_usunenv(t_lex *med, t_env *env)
 	t_lex	*mwp;
 	t_lex	*save;
 
-
 	env = env + 0;
 	save = med;
 	mwp = save->next;
@@ -78,7 +77,7 @@ t_env	*ft_get_del_env(char *mol, t_env *env)
 
 t_env	*ft_unsetenv(t_lex *med, t_env *env)
 {
-	t_lex   *swp;
+	t_lex	*swp;
 
 	swp = med;
 	swp = ft_check_usunenv(swp, env);

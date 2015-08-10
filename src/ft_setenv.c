@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/29 16:45:11 by mgras             #+#    #+#             */
-/*   Updated: 2015/04/29 16:45:16 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/10 19:31:31 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	ft_usrenv_error(char *err, int mol)
 		ft_putstr(C_CYAN);
 		ft_putstr(err);
 		ft_putstr(C_RED);
-		ft_putendl(" is not valid, and was removed from the comand line, bitch");
+		ft_putendl(" is not valid, and was removed\
+		from the comand line, bitch");
 	}
 	else if (mol == 001)
 		ft_putendl("You typing's so full of shit, I ain't going to do nothing");
@@ -57,26 +58,26 @@ int		ft_comp_env_str(t_env *env, char *str)
 
 t_lex	*ft_check_usenv(t_lex *med, t_env *env)
 {
-    t_lex   *swp;
+	t_lex	*swp;
 	t_lex	*save;
 
 	save = med;
-    while (save != NULL)
-    {
+	while (save != NULL)
+	{
 		swp = save->next;
-    	if (ft_lex_env(swp) == -1)
-    	{
-        	ft_usrenv_error(swp->mem, 000);
+		if (ft_lex_env(swp) == -1)
+		{
+			ft_usrenv_error(swp->mem, 000);
 			save = ft_del_lex_mem(save, save->next);
-    	}
+		}
 		else if (ft_is_env_dubs(env, swp))
 		{
 			ft_usrenv_error(swp->mem, 002);
 			save = ft_del_lex_mem(save, save->next);
 		}
-        else
-            save = save->next;
-    }
+		else
+			save = save->next;
+	}
 	if (med->next == NULL)
 		ft_usrenv_error(NULL, 001);
 	return (med->next);
@@ -105,7 +106,7 @@ void	ft_put_at_end_env(t_env *env, char *full)
 	swp->next = new;
 }
 
-t_env   *ft_setenv(t_lex *med, t_env *env)
+t_env	*ft_setenv(t_lex *med, t_env *env)
 {
 	t_lex	*swp;
 
@@ -116,10 +117,10 @@ t_env   *ft_setenv(t_lex *med, t_env *env)
 		env = ft_new_env(env, swp->mem);
 		swp = swp->next;
 	}
-	while(swp != NULL)
+	while (swp != NULL)
 	{
 		ft_put_at_end_env(env, swp->mem);
 		swp = swp->next;
 	}
-    return (env);
+	return (env);
 }
