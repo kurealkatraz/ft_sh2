@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:29:11 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/10 17:51:17 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/12 12:22:27 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,52 @@ t_env   *ft_setenv(t_lex *med, t_env *env);
 /*
 **	ft_prex.c
 */
-t_lex	*ft_get_next_op(t_lex *med);
+t_env	*ft_muzukashi(t_lex *med, t_env *env);
+
+/*
+**	ft_prex_one.c
+*/
+char	*ft_return_path_bin(char *med);
 char	*ft_make_bin(t_lex *med);
+char	**ft_envp_dup(t_env *env, int i);
 char	**ft_get_envp(t_env *env);
-void	ft_mkfile(char *filename);
 char	**ft_make_argv(t_lex *med);
+
+/*
+**	ft_prex_two.c
+*/
 t_lex	*ft_next_op(t_lex *med);
 void	ft_exec(char **envp, char **argv, char *bin);
-t_env	*ft_parser(t_lex *med, t_env *env);
-t_env	*ft_muzukashi(t_lex *med, t_env *env);
-void	ft_del_exec(char **bin, char ***argv, char ***envp);
+char	*ft_get_redi_dir(t_lex *med);
+char	*ft_get_redi(t_lex *med);
+void	ft_mkfile(char *filename);
+
+/*
+**	ft_prex_three.c
+*/
+int		ft_is_op_redi(t_lex *med);
+void	ft_right_d_redi(t_lex *med, t_env *env);
+void	ft_right_s_redi(t_lex *med, t_env *env);
+int		ft_reboot_file(int fd, t_lex *med);
+void	ft_delfile(char *filename);
+
+/*
+**	ft_prex_four.c
+*/
+t_lex	*ft_get_next_op(t_lex *med);
+t_env	*ft_what_buildtin(t_lex *med, t_env *env);
 char	**ft_cre_exec(char **bin, char ***argv, t_lex *med, t_env *env);
+void	ft_del_exec(char **bin, char ***argv, char ***envp);
+t_lex	*ft_get_fd_s_redi(t_lex *med);
+
+/*
+**	ft_prex_five.c
+*/
+void	ft_prex_errors(char *erstr, int erono);
+void	ft_left_s_redi(t_lex *med, t_env *env);
+t_lex	*ft_check_if_more(t_lex *med);
+t_env	*ft_parser_split(t_lex *med, t_lex *swp, t_env *env);
+t_env	*ft_parser(t_lex *med, t_env *env);
 
 /*
 **	ft_path_macker.c
@@ -216,6 +251,9 @@ char	**ft_print_raw_tab_fd(char **tab, int fd);
 /*
 **	ft_heredocs.c
 */
+t_lex	*ft_get_here(t_lex *med);
+t_lex	*ft_solo_heredocs(t_lex *med);
+void	ft_nice_meme(char *f_line);
 void	ft_left_d_redi(t_lex *med, t_lex *curr, t_env *env);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: mgras <mgras@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/03/31 15:31:03 by mgras             #+#    #+#              #
-#    Updated: 2015/08/10 23:35:33 by mgras            ###   ########.fr        #
+#    Updated: 2015/08/12 12:17:55 by mgras            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,14 +29,24 @@ SRC_NAME =	ft_chldabs.c \
 			ft_correction_center.c \
 			ft_scan_error.c \
 			ft_iswhat.c \
+			ft_iswhat_one.c \
+			ft_iswhat_two.c \
 			ft_path_maker.c \
 			ft_prex.c \
+			ft_prex_one.c \
+			ft_prex_two.c \
+			ft_prex_three.c \
+			ft_prex_four.c \
+			ft_prex_five.c \
 			ft_setenv.c \
 			ft_unsetenv.c \
 			ft_cd.c \
 			ft_pipes.c \
+			ft_pipes_one.c \
+			ft_pipes_two.c \
 			ft_get_file.c \
 			ft_heredocs.c \
+			ft_heredocs_one.c \
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 
