@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 18:26:15 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/12 11:47:53 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/12 16:22:06 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,34 @@ int		ft_end_pipe(char **argv, char **envp, char *bin, int src)
 	return (-2);
 }
 
+int		ft_cont_redi(t_lex *med)
+{
+	t_lex *swp;
+
+	swp = med;
+	while (swp)
+	{
+		if (swp->mem[0] == '>')
+			return (1);
+		swp = swp->next;
+	}
+	return (0);
+}
+
+int ft_final_output(char **argv, char **envp, t_lex *swp, int fd)
+{
+	if (ft_cont_redi(swp))
+	{
+		if (ft_strcmp(ft_get_redi(swp), ">"))
+			return (-2);
+		else if (ft_strcmp(ft_get_redi(swp), ">>"))
+			return (-2);
+	}
+	else
+		ft_end_pipe(argv, envp, ft_make_bin(swp), fd);
+	return (-2);
+}
+
 t_lex	*ft_pipe_it(t_lex *med, t_env *env, int fd)
 {
 	t_lex	*swp;
@@ -102,10 +130,10 @@ t_lex	*ft_pipe_it(t_lex *med, t_env *env, int fd)
 	else if (ft_is_next_op_pipe(swp))
 		fd = ft_rec_pipe(argv, envp, ft_make_bin(swp), fd);
 	else
-		fd = ft_end_pipe(argv, envp, ft_make_bin(swp), fd);
+		fd = ft_final_output(argv, envp, swp, fd);
 	ft_del_tab(argv);
 	ft_del_tab(envp);
 	if (ft_is_next_op_pipe(swp))
 		swp = ft_pipe_it(ft_get_next_op(swp), env, fd);
-	return (swp);
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/12 12:15:18 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/12 12:15:44 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/12 16:21:42 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ int		ft_is_op_redi(t_lex *med)
 	{
 		if (ft_isredi(swp->mem[0]))
 			return (1);
+		if (ft_ispipe(swp->mem[0]))
+			return (0);
 		swp = swp->next;
 	}
 	return (0);
