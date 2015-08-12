@@ -1,8 +1,0 @@
-Issues when PATH is unset (seems ok, glitchy at some times)
-env -i launch (seems ok)
-CD - Unsets debugs (seems ok)
-Termcaps
-Check SHlvls (Seems ok)
-pipes (seems ok)
-heredocs
-inputs
