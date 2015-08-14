@@ -295,6 +295,7 @@ int					ft_start_pipe(char **argv, char **envp, char *bin);
 int					ft_rec_pipe(char **argv, char **envp, char *bin, int src);
 int					ft_end_pipe(char **argv, char **envp, char *bin, int src);
 t_lex				*ft_pipe_it(t_lex *med, t_env *env, int fd);
+int					ft_cont_redi(t_lex *med);
 
 /*
 **	ft_pipes_one.c

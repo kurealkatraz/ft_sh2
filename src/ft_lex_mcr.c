@@ -19,7 +19,7 @@ t_lex	*ft_free_lex(t_lex *medivac)
 	swp = medivac;
 	while (swp != NULL)
 	{
-		free(swp->mem);
+		ft_strdel(&swp->mem);
 		medivac = medivac->next;
 		free(swp);
 		swp = medivac;
