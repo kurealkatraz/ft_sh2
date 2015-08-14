@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 18:26:15 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/12 16:22:06 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/14 12:56:43 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,51 @@ int		ft_cont_redi(t_lex *med)
 	return (0);
 }
 
+int	ft_s_r_redi_init(t_lex *med)
+{
+	t_lex	*swp;
+
+	swp = med;
+	ft_putendl(ft_get_redi_dir(swp));
+	ft_delfile(ft_get_redi_dir(swp));
+	ft_mkfile(ft_get_redi_dir(swp));
+	return (open(ft_get_redi_dir(swp), O_RDWR));
+}
+
+int	ft_s_r_redi_p(char **argv, char **envp, t_lex *swp, int fd)
+{
+	int		sys;
+	int		out;
+	char	*bin;
+	char	*filename;
+	pid_t	child;
+
+	out = ft_s_r_redi_init(swp);
+	child = fork();
+	if (child == 0)
+	{
+		bin = ft_make_bin(swp);
+		filename = ft_get_redi_dir(swp);
+		dup2(fd, 0);
+		dup2(out, 1);
+		execve(bin, argv, envp);
+		close(fd);
+		close(out);
+		ft_strdel(&bin);
+		ft_strdel(&filename);
+		kill(getpid(), SIGKILL);
+	}
+	wait(&sys);
+	return (out);
+}
+
 int ft_final_output(char **argv, char **envp, t_lex *swp, int fd)
 {
 	if (ft_cont_redi(swp))
 	{
-		if (ft_strcmp(ft_get_redi(swp), ">"))
-			return (-2);
-		else if (ft_strcmp(ft_get_redi(swp), ">>"))
+		if (!ft_strcmp(ft_get_redi(swp), ">"))
+			close(ft_s_r_redi_p(argv, envp, swp, fd));
+		else if (!ft_strcmp(ft_get_redi(swp), ">>"))
 			return (-2);
 	}
 	else
