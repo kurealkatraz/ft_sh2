@@ -6,13 +6,27 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/14 13:11:23 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/14 13:22:24 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/14 13:33:20 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int	ft_d_r_redi_init(t_lex *med)
+int		ft_final_output(char **argv, char **envp, t_lex *swp, int fd)
+{
+	if (ft_cont_redi(swp))
+	{
+		if (!ft_strcmp(ft_get_redi(swp), ">"))
+			close(ft_s_r_redi_p(argv, envp, swp, fd));
+		else if (!ft_strcmp(ft_get_redi(swp), ">>"))
+			close(ft_d_r_redi_p(argv, envp, swp, fd));
+	}
+	else
+		ft_end_pipe(argv, envp, ft_make_bin(swp), fd);
+	return (-2);
+}
+
+int		ft_d_r_redi_init(t_lex *med)
 {
 	t_lex	*swp;
 
@@ -22,7 +36,7 @@ int	ft_d_r_redi_init(t_lex *med)
 	return (open(ft_get_redi_dir(swp), O_RDWR | O_APPEND));
 }
 
-int	ft_d_r_redi_p(char **argv, char **envp, t_lex *swp, int fd)
+int		ft_d_r_redi_p(char **argv, char **envp, t_lex *swp, int fd)
 {
 	int		sys;
 	int		out;

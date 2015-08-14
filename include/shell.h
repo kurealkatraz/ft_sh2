@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:29:11 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/14 13:20:38 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/14 13:39:46 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,6 +318,8 @@ int					ft_s_r_redi_p(char **argv, char **envp, t_lex *swp, int fd);
 */
 int					ft_d_r_redi_p(char **argv, char **envp, t_lex *swp, int fd);
 int					ft_d_r_redi_init(t_lex *med);
+int					ft_final_output\
+						(char **argv, char **envp, t_lex *swp, int fd);
 
 /*
 **	ft_heredocs.c

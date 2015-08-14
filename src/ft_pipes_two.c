@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/12 11:46:42 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/14 13:16:49 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/14 13:39:23 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	**ft_make_read(int fd)
 	return (tab);
 }
 
-int	ft_s_r_redi_init(t_lex *med)
+int		ft_s_r_redi_init(t_lex *med)
 {
 	t_lex	*swp;
 
@@ -52,7 +52,7 @@ int	ft_s_r_redi_init(t_lex *med)
 	return (open(ft_get_redi_dir(swp), O_RDWR));
 }
 
-int	ft_s_r_redi_p(char **argv, char **envp, t_lex *swp, int fd)
+int		ft_s_r_redi_p(char **argv, char **envp, t_lex *swp, int fd)
 {
 	int		sys;
 	int		out;

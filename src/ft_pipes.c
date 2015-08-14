@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 18:26:15 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/14 13:16:02 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/14 13:33:02 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,20 +99,6 @@ int		ft_cont_redi(t_lex *med)
 		swp = swp->next;
 	}
 	return (0);
-}
-
-int ft_final_output(char **argv, char **envp, t_lex *swp, int fd)
-{
-	if (ft_cont_redi(swp))
-	{
-		if (!ft_strcmp(ft_get_redi(swp), ">"))
-			close(ft_s_r_redi_p(argv, envp, swp, fd));
-		else if (!ft_strcmp(ft_get_redi(swp), ">>"))
-			close(ft_d_r_redi_p(argv, envp, swp, fd));
-	}
-	else
-		ft_end_pipe(argv, envp, ft_make_bin(swp), fd);
-	return (-2);
 }
 
 t_lex	*ft_pipe_it(t_lex *med, t_env *env, int fd)
