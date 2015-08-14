@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:29:11 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/12 13:26:17 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/14 13:20:38 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,6 +310,14 @@ char				**ft_print_tab(char **tab);
 */
 char				**ft_make_read(int fd);
 t_lex				*ft_get_added(int fd, t_lex *added);
+int					ft_s_r_redi_init(t_lex *med);
+int					ft_s_r_redi_p(char **argv, char **envp, t_lex *swp, int fd);
+
+/*
+**	ft_pipes_three.c
+*/
+int					ft_d_r_redi_p(char **argv, char **envp, t_lex *swp, int fd);
+int					ft_d_r_redi_init(t_lex *med);
 
 /*
 **	ft_heredocs.c

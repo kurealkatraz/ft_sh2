@@ -6,7 +6,7 @@
 #    By: mgras <mgras@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/03/31 15:31:03 by mgras             #+#    #+#              #
-#    Updated: 2015/08/12 12:17:55 by mgras            ###   ########.fr        #
+#    Updated: 2015/08/14 13:15:21 by mgras            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRC_NAME =	ft_chldabs.c \
 			ft_pipes.c \
 			ft_pipes_one.c \
 			ft_pipes_two.c \
+			ft_pipes_three.c \
 			ft_get_file.c \
 			ft_heredocs.c \
 			ft_heredocs_one.c \
