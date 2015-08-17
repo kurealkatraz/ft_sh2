@@ -20,6 +20,8 @@ t_lex	*ft_free_lex(t_lex *medivac)
 	while (swp != NULL)
 	{
 		ft_strdel(&swp->mem);
+		if (swp->path)
+			ft_strdel(&swp->path);
 		medivac = medivac->next;
 		free(swp);
 		swp = medivac;
@@ -53,6 +55,10 @@ t_lex	*ft_rev_lex(t_lex *medivac)
 	while (swp != NULL)
 	{
 		reved = ft_new_meme(reved, swp->mem);
+		if (swp->path)
+			reved->path = ft_strdup(swp->path);
+		else
+			reved->path = NULL;
 		swp = swp->next;
 	}
 	ft_free_lex(medivac);

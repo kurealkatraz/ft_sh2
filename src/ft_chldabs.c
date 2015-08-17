@@ -86,6 +86,7 @@ t_env	*ft_child_molesting(char *line, t_env *env, int *ext)
 	pth = ft_get_pth(pth, env);
 	if (pth != NULL)
 		med = ft_asign_path(pth, med);
+	ft_free_pth(pth);
 	if (ft_strcmp(med->mem, "exit") == 0)
 	{
 		*ext = 1;
@@ -95,8 +96,6 @@ t_env	*ft_child_molesting(char *line, t_env *env, int *ext)
 	if (med == NULL)
 		return (env);
 	env = ft_muzukashi(med, env);
-	if (pth)
-		ft_free_pth(pth);
 	if (med)
 		med = ft_free_lex(med);
 	return (env);

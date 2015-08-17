@@ -78,16 +78,18 @@ t_lex	*ft_braced_lex(int *s, char *line, t_lex *med, char q)
 t_lex	*ft_next_lex(t_lex *med, int *s, char *line)
 {
 	if (!ft_isalien(line[0]))
-		return (ft_alpha_lex(s, line, med));
+		med = (ft_alpha_lex(s, line, med));
 	else if (line[0] == '>' || line[0] == '<' || line[0] == '|')
-		return (ft_compl_lex(s, line, med));
+		med = (ft_compl_lex(s, line, med));
 	else if ((line[0] == '\"' || line[0] == '\''))
-		return (ft_braced_lex(s, line, med, line[0]));
+		med = (ft_braced_lex(s, line, med, line[0]));
 	else
 	{
 		(*s) = (*s) + 1;
 		return (med);
 	}
+	med->path = NULL;
+	return (med);
 }
 
 t_lex	*ft_lexor(char *line)

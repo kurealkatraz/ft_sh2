@@ -84,4 +84,5 @@ void	ft_prompt(char **envp, t_env *env)
 				env = ft_core(line, env, ext);
 		}
 	}
+	free(ext);
 }

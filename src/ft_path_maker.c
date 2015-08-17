@@ -45,6 +45,7 @@ t_pth	*ft_new_pth(t_pth *pth, char *path)
 	i = 0;
 	newpth->path = ft_strcpy(newpth->path, path);
 	newpth->next = pth;
+	ft_strdel(&path);
 	return (newpth);
 }
 
