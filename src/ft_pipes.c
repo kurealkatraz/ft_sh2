@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 18:26:15 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/14 13:33:02 by mgras            ###   ########.fr       */
+/*   Updated: 2015/08/23 16:21:33 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ t_lex	*ft_pipe_it(t_lex *med, t_env *env, int fd)
 	char	**argv;
 
 	swp = med;
-	envp = NULL;
 	envp = ft_get_envp(env);
 	argv = ft_make_argv(swp);
 	if (fd < 2)
@@ -117,8 +116,7 @@ t_lex	*ft_pipe_it(t_lex *med, t_env *env, int fd)
 		fd = ft_rec_pipe(argv, envp, ft_make_bin(swp), fd);
 	else
 		fd = ft_final_output(argv, envp, swp, fd);
-	ft_del_tab(argv);
-	ft_del_tab(envp);
+	ft_del_exec(NULL, &envp, &argv);
 	if (ft_is_next_op_pipe(swp))
 		swp = ft_pipe_it(ft_get_next_op(swp), env, fd);
 	return (NULL);
