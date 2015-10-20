@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env_two.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
+/*   By: noql <noql@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/10 23:24:50 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/10 23:27:53 by mgras            ###   ########.fr       */
+/*   Updated: 2015/10/20 20:54:22 by noql             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ t_env	*ft_env(t_lex *med, t_env *env)
 		if (ft_strcmp(swp->next->mem, "-i") == 0)
 		{
 			ft_del_lex_mem(med, med->next);
-			return (ft_env(med, NULL));
+			ft_env(med, NULL);
+			return (env);
 		}
 	pars = ft_parse_env(swp, 0, 0);
 	if (pars == 1)

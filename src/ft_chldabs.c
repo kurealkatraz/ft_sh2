@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_chldabs.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
+/*   By: noql <noql@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/31 18:05:14 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/10 17:28:32 by mgras            ###   ########.fr       */
+/*   Updated: 2015/10/20 20:58:29 by noql             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_env	*ft_child_molesting(char *line, t_env *env, int *ext)
 	if (pth != NULL)
 		med = ft_asign_path(pth, med);
 	ft_free_pth(pth);
-	if (ft_strcmp(med->mem, "exit") == 0)
+	if (ft_strcmp(med->mem, "exit") == 0 || med->mem[0] == 4)
 	{
 		*ext = 1;
 		return (ft_free_all_env(env));
