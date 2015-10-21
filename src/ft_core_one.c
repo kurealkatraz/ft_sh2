@@ -6,7 +6,7 @@
 /*   By: mgras <mgras@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/10 23:17:14 by mgras             #+#    #+#             */
-/*   Updated: 2015/08/23 15:48:30 by mgras            ###   ########.fr       */
+/*   Updated: 2015/10/21 12:59:45 by mgras            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ char	*ft_split_line(char *line, int *ss, int len, int ts)
 	{
 		if (line[*ss] == ';' && inbraces == -1 && inminbra == -1)
 			get_out = 1;
-		else if (line[*ss] == '\"')
+		else if (line[*ss] == '\"' && inminbra == -1)
 			inbraces = -inbraces;
-		else if (line[*ss] == '\'')
+		else if (line[*ss] == '\'' && inbraces == -1)
 			inminbra = -inminbra;
 		*ss = *ss + 1;
 	}
 	len = ft_get_proper_len(line, ts, *ss);
-	return (ft_clean_str(ft_strsub(line, ts, len)));
+	return (ft_strsub(line, ts, len));
 }
 
 t_env	*ft_core(char *line, t_env *env, int *ext)
